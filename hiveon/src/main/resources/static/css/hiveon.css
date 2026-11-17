@@ -1,0 +1,145 @@
+@font-face {
+    font-family: Nunito;
+    src: url("../fonts/nunito-latin.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+}
+
+:root {
+    color-scheme: light;
+    font-family: Nunito, system-ui, sans-serif;
+    color: #594337;
+    background: #fff6e5;
+    --cacao: #594337;
+    --miel: #f6d77d;
+    --salvia: #cfdfc4;
+    --crema: #fff6e5;
+    --blanco: #fff;
+    --borde: #e5d7c2;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; }
+
+.pagina-publica {
+    display: grid;
+    min-height: 100svh;
+    place-items: center;
+    padding: clamp(1rem, 5vw, 3.5rem);
+}
+
+.portada {
+    display: grid;
+    grid-template-columns: minmax(9rem, 1fr) minmax(0, 1.35fr);
+    align-items: center;
+    gap: clamp(1.5rem, 6vw, 4.5rem);
+    width: min(100%, 59rem);
+    padding: clamp(1.5rem, 6vw, 4rem);
+    border: 1px solid var(--borde);
+    border-radius: 2rem;
+    background: var(--blanco);
+}
+
+.logo { display: block; width: 100%; max-width: 16rem; height: auto; }
+.logo-pequeno { width: 6rem; margin-inline: auto; }
+.logo-barra { width: 3.75rem; }
+.marca { display: inline-block; }
+
+h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5.4vw, 3.1rem);
+    line-height: 1.1;
+    font-weight: 800;
+    text-wrap: balance;
+}
+
+p { margin: 0.85rem 0 1.4rem; line-height: 1.55; }
+
+.boton {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.65rem 1.15rem;
+    border: 1px solid transparent;
+    border-radius: 0.85rem;
+    background: var(--miel);
+    color: var(--cacao);
+    font: inherit;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton:hover { border-color: var(--cacao); }
+.boton-secundario { background: var(--salvia); }
+:focus-visible { outline: 3px solid #44623e; outline-offset: 3px; }
+
+.acceso {
+    width: min(100%, 26rem);
+    padding: clamp(1.25rem, 5vw, 2.25rem);
+    border: 1px solid var(--borde);
+    border-radius: 1.75rem;
+    background: var(--blanco);
+}
+
+.acceso .marca { display: block; width: fit-content; margin: 0 auto 1.15rem; }
+.acceso h1 { font-size: 2rem; text-align: center; }
+.formulario { display: grid; gap: 0.45rem; margin-top: 1.4rem; }
+.formulario label { font-weight: 800; }
+.formulario input:not([type="hidden"]), .formulario select {
+    min-width: 0;
+    min-height: 2.75rem;
+    margin-bottom: 0.6rem;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid #aa9586;
+    border-radius: 0.7rem;
+    color: var(--cacao);
+    background: var(--blanco);
+    font: inherit;
+}
+
+.aviso { margin: 1rem 0 0; padding: 0.65rem 0.8rem; border-radius: 0.7rem; }
+.aviso-error { background: #f6e1dc; color: #6c3026; }
+.aviso-exito { background: var(--salvia); color: #304735; }
+.barra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem clamp(1rem, 5vw, 3.5rem);
+    border-bottom: 1px solid var(--borde);
+    background: var(--blanco);
+}
+
+.area { width: min(100% - 2rem, 66rem); margin: 3rem auto; }
+.area-formulario { max-width: 39rem; }
+.encabezado-modulo, .registro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.tarjeta {
+    padding: 1.2rem;
+    border: 1px solid var(--borde);
+    border-radius: 1.1rem;
+    background: var(--blanco);
+}
+.registros { display: grid; gap: 0.8rem; margin: 1.25rem 0; padding: 0; list-style: none; }
+.enlace-registro, .volver { color: var(--cacao); font-weight: 800; }
+.enlace-registro { font-size: 1.1rem; overflow-wrap: anywhere; }
+.volver { display: inline-block; margin-bottom: 1rem; }
+.estado { border-radius: 999px; padding: 0.25rem 0.7rem; background: var(--salvia); color: #304735; }
+.datos-apiario { display: grid; grid-template-columns: auto 1fr; gap: 0.65rem 1rem; }
+.datos-apiario dt { font-weight: 800; }
+.datos-apiario dd { margin: 0; overflow-wrap: anywhere; }
+.error-campo { margin: 0 0 0.55rem; color: #6c3026; }
+.opcional { font-weight: 400; }
+
+@media (max-width: 36rem) {
+    .portada { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .portada .logo { max-width: 10rem; }
+}

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Iniciar sesión · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body class="pagina-publica">
+    <main class="acceso">
+        <a class="marca" th:href="@{/}" aria-label="Volver a la bienvenida de HiveOn">
+            <img class="logo logo-pequeno" th:src="@{/img/hiveon-logo.png}" alt="HiveOn">
+        </a>
+        <h1>Iniciar sesión</h1>
+        <p class="aviso aviso-error" th:if="${param.error}" role="alert">
+            No se pudo iniciar sesión. Revisa tus credenciales e inténtalo de nuevo.
+        </p>
+        <p class="aviso aviso-exito" th:if="${param.salida}" role="status">
+            Cerraste sesión.
+        </p>
+        <form class="formulario" th:action="@{/ingresar}" method="post">
+            <label for="correo">Correo electrónico</label>
+            <input id="correo" name="username" type="email" autocomplete="username" required>
+            <label for="contrasena">Contraseña</label>
+            <input id="contrasena" name="password" type="password"
+                   autocomplete="current-password" required>
+            <button class="boton" type="submit">Ingresar</button>
+        </form>
+    </main>
+</body>
+</html>

@@ -1,0 +1,32 @@
+package com.hiveon.controller;
+
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+class AccesoController {
+
+    @GetMapping("/")
+    String bienvenida() {
+        return "index";
+    }
+
+    @GetMapping("/ingresar")
+    String ingresar(Authentication usuario) {
+        if (usuario != null && usuario.isAuthenticated()
+                && !(usuario instanceof AnonymousAuthenticationToken)) {
+            return "redirect:/inicio";
+        }
+        return "ingresar";
+    }
+
+    @GetMapping("/inicio")
+    String inicio(Authentication usuario, Model model) {
+        model.addAttribute("esApicultor", usuario.getAuthorities().stream()
+                .anyMatch(autoridad -> autoridad.getAuthority().equals("ROLE_APICULTOR")));
+        return "inicio";
+    }
+}

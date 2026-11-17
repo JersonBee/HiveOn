@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registrar apiario · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area area-formulario">
+        <a class="volver" th:href="@{/apiarios}">Volver a Mis apiarios</a>
+        <h1>Registrar apiario</h1>
+        <form class="tarjeta formulario" th:action="@{/apiarios/nuevo}" method="get">
+            <label for="departamento">Departamento</label>
+            <select id="departamento" name="departamento" required
+                    th:attr="aria-invalid=${departamentoInvalido},aria-describedby=${departamentoInvalido ? 'error-departamento' : null}">
+                <option value="">Selecciona el departamento</option>
+                <option th:each="ubicacion : ${departamentos}" th:value="${ubicacion.codigo}"
+                        th:selected="${ubicacion.codigo == formulario.departamento}"
+                        th:text="${ubicacion.nombre}">Departamento</option>
+            </select>
+            <p id="error-departamento" class="error-campo" th:if="${departamentoInvalido}" role="alert">
+                Selecciona un departamento de la lista.
+            </p>
+            <button class="boton boton-secundario" type="submit">Mostrar municipios</button>
+        </form>
+        <form class="tarjeta formulario" th:action="@{/apiarios}" th:object="${formulario}"
+              method="post" th:if="${departamentoSeleccionado}">
+            <input type="hidden" th:field="*{departamento}">
+            <ul class="aviso aviso-error" th:if="${#fields.hasGlobalErrors()}" role="alert">
+                <li th:each="error : ${#fields.globalErrors()}" th:text="${error}">Error</li>
+            </ul>
+            <label for="nombre">Nombre del apiario</label>
+            <input id="nombre" th:field="*{nombre}" type="text" required
+                   th:attr="aria-invalid=${#fields.hasErrors('nombre')},aria-describedby=${#fields.hasErrors('nombre') ? 'error-nombre' : null}">
+            <p id="error-nombre" class="error-campo" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</p>
+            <label for="municipio">Municipio</label>
+            <select id="municipio" th:field="*{municipio}" required
+                    th:attr="aria-invalid=${#fields.hasErrors('municipio')},aria-describedby=${#fields.hasErrors('municipio') ? 'error-municipio' : null}">
+                <option value="">Selecciona el municipio</option>
+                <option th:each="ubicacion : ${municipios}" th:value="${ubicacion.codigo}"
+                        th:text="${ubicacion.nombre}">Municipio</option>
+            </select>
+            <p id="error-municipio" class="error-campo" th:if="${#fields.hasErrors('municipio')}" th:errors="*{municipio}">Error</p>
+            <label for="vereda">Vereda <span class="opcional">(opcional)</span></label>
+            <input id="vereda" th:field="*{vereda}" type="text">
+            <button class="boton" type="submit">Guardar apiario</button>
+        </form>
+    </main>
+</body>
+</html>

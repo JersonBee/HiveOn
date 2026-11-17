@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <header class="barra" th:fragment="barra">
+        <a class="marca" th:href="@{/inicio}" aria-label="Inicio de HiveOn">
+            <img class="logo logo-barra" th:src="@{/img/hiveon-logo.png}" alt="HiveOn">
+        </a>
+        <form th:action="@{/salir}" method="post">
+            <button class="boton boton-secundario" type="submit">Cerrar sesión</button>
+        </form>
+    </header>
+</body>
+</html>

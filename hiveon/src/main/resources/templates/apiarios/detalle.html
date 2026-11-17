@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="|${apiario.nombre} · HiveOn|">Apiario · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area area-formulario">
+        <a class="volver" th:href="@{/apiarios}">Volver a Mis apiarios</a>
+        <h1 th:text="${apiario.nombre}">Apiario</h1>
+        <dl class="tarjeta datos-apiario">
+            <dt>Departamento</dt>
+            <dd th:text="${apiario.departamento}">Departamento</dd>
+            <dt>Municipio</dt>
+            <dd th:text="${apiario.municipio}">Municipio</dd>
+            <dt>Vereda</dt>
+            <dd th:text="${apiario.vereda != null ? apiario.vereda : 'Sin indicar'}">Vereda</dd>
+            <dt>Estado</dt>
+            <dd th:text="${apiario.archivado ? 'Archivado' : 'Activo'}">Activo</dd>
+        </dl>
+    </main>
+</body>
+</html>

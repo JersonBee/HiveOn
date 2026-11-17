@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inicio · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area">
+        <h1>Inicio</h1>
+        <p>Tu sesión está activa.</p>
+        <a th:if="${esApicultor}" class="boton" th:href="@{/apiarios}">Mis apiarios</a>
+    </main>
+</body>
+</html>
