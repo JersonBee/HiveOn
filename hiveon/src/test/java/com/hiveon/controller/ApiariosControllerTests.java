@@ -49,6 +49,15 @@ class ApiariosControllerTests {
     }
 
     @Test
+    void rechazaElAltaSinCsrfOSinRolDeApicultor() throws Exception {
+        mvc.perform(post("/apiarios").with(user(CORREO).roles("APICULTOR")))
+                .andExpect(status().isForbidden());
+        mvc.perform(post("/apiarios").with(user(CORREO).roles("OPERARIO")).with(csrf()))
+                .andExpect(status().isForbidden());
+        verify(jdbc, never()).sql(startsWith("insert into"));
+    }
+
+    @Test
     void registraConLaCuentaDeSesionAunqueSeEnvieOtroPropietario() throws Exception {
         JdbcClient.StatementSpec escritura = mock(JdbcClient.StatementSpec.class, RETURNS_SELF);
         when(jdbc.sql(startsWith("insert into hiveon.apiarios"))).thenReturn(escritura);
