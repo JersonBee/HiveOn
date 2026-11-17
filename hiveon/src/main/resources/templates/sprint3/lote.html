@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lote propio · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area">
+        <a class="volver" th:href="@{/apiarios/{id}/produccion(id=${apiario.id})}">Volver a Producción y lotes</a>
+        <h1 th:text="|Lote ${lote.codigo}|"></h1>
+        <p th:text="${lote.publicado ? 'Publicado' : 'Borrador'}"></p>
+        <section th:if="${lote.publicado or apiario.archivado}">
+            <h2>Cosechas del lote</h2>
+            <ul class="registros">
+                <li class="tarjeta" th:each="c : ${cosechas}" th:if="${c.incluida}" th:text="|${c.fecha} · ${c.cantidad_kg} kg|"></li>
+            </ul>
+        </section>
+        <form class="tarjeta formulario" th:if="${!lote.publicado and !apiario.archivado}" method="post"
+              th:action="@{/apiarios/{id}/produccion/lotes/{lote}/editar(id=${apiario.id},lote=${lote.id})}">
+            <label for="codigo">Código del lote</label>
+            <input id="codigo" name="codigo" th:value="${lote.codigo}" maxlength="80" required>
+            <fieldset>
+                <legend>Cosechas del mismo apiario</legend>
+                <p th:if="${cosechas.isEmpty()}">Aún no hay cosechas disponibles.</p>
+                <div th:each="c : ${cosechas}">
+                    <input type="checkbox" name="cosechas" th:id="|cosecha-${c.id}|" th:value="${c.id}" th:checked="${c.incluida}">
+                    <label th:for="|cosecha-${c.id}|" th:text="|${c.fecha} · ${c.cantidad_kg} kg|"></label>
+                </div>
+            </fieldset>
+            <button class="boton" type="submit">Guardar lote</button>
+        </form>
+        <form class="acciones-modulo" th:if="${!lote.publicado and !apiario.archivado}" method="post"
+              th:action="@{/apiarios/{id}/produccion/lotes/{lote}/publicar(id=${apiario.id},lote=${lote.id})}">
+            <button class="boton boton-secundario" type="submit">Publicar lote</button>
+        </form>
+    </main>
+</body>
+</html>

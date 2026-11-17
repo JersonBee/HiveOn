@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reportes del apiario · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area">
+        <a class="volver" th:href="@{/apiarios/{id}/gestion(id=${apiario.id})}">Volver a la gestión</a>
+        <h1>Reportes del apiario</h1>
+        <p th:text="${apiario.nombre}"></p>
+        <form method="get" class="tarjeta formulario area-formulario" th:action="@{/apiarios/{id}/reportes(id=${apiario.id})}">
+            <label for="tipo">Tipo de reporte</label>
+            <select name="tipo" id="tipo">
+                <option value="sanitario" th:selected="${tipo == 'sanitario'}">Sanitario</option>
+                <option value="produccion" th:selected="${tipo == 'produccion'}">Producción</option>
+                <option value="tareas" th:selected="${tipo == 'tareas'}">Tareas pendientes</option>
+            </select>
+            <button class="boton" type="submit">Consultar</button>
+        </form>
+        <p th:if="${filas.isEmpty()}">No hay datos disponibles para este reporte.</p>
+        <ul class="registros">
+            <li class="tarjeta" th:each="f : ${filas}">
+                <strong th:text="|${f.fecha} · ${f.categoria}|"></strong>
+                <p class="texto-registro" th:text="${f.detalle}"></p>
+            </li>
+        </ul>
+    </main>
+</body>
+</html>

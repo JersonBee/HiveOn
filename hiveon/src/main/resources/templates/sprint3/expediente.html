@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Expediente sanitario · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area">
+        <a class="volver" th:href="@{/expedientes}">Volver a Expedientes remitidos</a>
+        <h1 th:text="${expediente.apiario}"></h1>
+        <p>Revisión sanitaria simulada</p>
+        <div class="tarjeta">
+            <strong th:text="|Remitido el ${expediente.remitido}|"></strong>
+            <p class="texto-registro" th:text="${expediente.descripcion}"></p>
+        </div>
+        <section class="seccion-modulo">
+            <h2>Antecedentes sanitarios</h2>
+            <p th:if="${antecedentes.isEmpty()}">Aún no hay antecedentes.</p>
+            <ul class="registros">
+                <li class="tarjeta" th:each="a : ${antecedentes}">
+                    <strong th:text="|${a.tipo} · ${a.fecha} · ${a.colmena ?: 'Apiario'}|"></strong>
+                    <p class="texto-registro" th:text="${a.descripcion}"></p>
+                </li>
+            </ul>
+        </section>
+        <form th:if="${expediente.decision == null}" class="tarjeta formulario" method="post"
+              th:action="@{/expedientes/{id}/resolver(id=${expediente.id})}">
+            <label for="decision">Decisión interna</label>
+            <select id="decision" name="decision" required>
+                <option value="">Selecciona una decisión</option><option value="VALIDADO">Validar</option><option value="RECHAZADO">Rechazar</option>
+            </select>
+            <label for="observaciones">Observaciones (opcional)</label>
+            <textarea id="observaciones" name="observaciones" maxlength="4000" rows="3"></textarea>
+            <button class="boton" type="submit">Registrar decisión</button>
+        </form>
+        <div class="tarjeta" th:unless="${expediente.decision == null}">
+            <strong th:text="|${expediente.decision} · ${expediente.resuelto} · ${expediente.inspector}|"></strong>
+            <p class="texto-registro" th:if="${expediente.observaciones_revision != null}" th:text="${expediente.observaciones_revision}"></p>
+        </div>
+    </main>
+</body>
+</html>

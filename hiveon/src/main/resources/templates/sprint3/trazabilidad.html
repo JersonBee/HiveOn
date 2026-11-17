@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trazabilidad · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area">
+        <a class="volver" th:href="@{/lotes}">Volver a Lotes publicados</a>
+        <h1 th:text="|Lote ${lote.codigo}|"></h1>
+        <dl class="tarjeta datos-apiario">
+            <dt>Apiario de origen</dt><dd th:text="${lote.apiario}"></dd>
+            <dt>Municipio</dt><dd th:text="${lote.municipio}"></dd>
+            <dt>Departamento</dt><dd th:text="${lote.departamento}"></dd>
+            <dt>Fechas de cosecha</dt>
+            <dd><ul><li th:each="fecha : ${fechas}" th:text="${fecha}"></li></ul></dd>
+        </dl>
+    </main>
+</body>
+</html>

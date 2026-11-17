@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Auditoría · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area">
+        <a class="volver" th:href="@{/administracion}">Volver a Administración</a>
+        <h1>Auditoría</h1>
+        <p th:if="${eventos.isEmpty()}">No hay eventos en esta página.</p>
+        <ul class="registros">
+            <li class="tarjeta" th:each="e : ${eventos}">
+                <strong th:text="${#strings.replace(e.accion, '_', ' ')}"></strong>
+                <div th:text="|${e.actor} · ${e.fecha} · ${e.resultado}|"></div>
+                <div th:if="${e.recurso != null}" th:text="|${e.recurso} ${e.recurso_id ?: ''}|"></div>
+            </li>
+        </ul>
+        <nav class="acciones-modulo" aria-label="Páginas de auditoría">
+            <a class="boton boton-secundario" th:if="${pagina > 1}" th:href="@{/administracion/auditoria(pagina=${pagina - 1})}">Anterior</a>
+            <a class="boton boton-secundario" th:if="${haySiguiente}" th:href="@{/administracion/auditoria(pagina=${pagina + 1})}">Siguiente</a>
+        </nav>
+    </main>
+</body>
+</html>

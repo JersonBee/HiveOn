@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Producción y lotes · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area">
+        <a class="volver" th:href="@{/apiarios/{id}/gestion(id=${apiario.id})}">Volver a la gestión</a>
+        <h1>Producción y lotes</h1>
+        <p th:text="${apiario.nombre}"></p>
+        <section class="seccion-modulo">
+            <h2>Cosechas</h2>
+            <p th:if="${cosechas.isEmpty()}">Aún no hay cosechas registradas.</p>
+            <ul class="registros">
+                <li class="tarjeta registro" th:each="c : ${cosechas}">
+                    <strong th:text="|${c.fecha} · ${c.cantidad_kg} kg|"></strong>
+                    <span th:text="${c.colmena ?: 'Apiario'}"></span>
+                </li>
+            </ul>
+            <form class="tarjeta formulario" th:unless="${apiario.archivado}" method="post"
+                  th:action="@{/apiarios/{id}/produccion/cosechas(id=${apiario.id})}">
+                <h3>Registrar cosecha</h3>
+                <label for="origen">Origen</label>
+                <select name="colmena" id="origen">
+                    <option value="">Apiario</option>
+                    <option th:each="c : ${colmenas}" th:value="${c.id}" th:text="${c.codigo}"></option>
+                </select>
+                <label for="fecha">Fecha de cosecha</label>
+                <input id="fecha" name="fecha" type="date" th:max="${hoy}" th:value="${hoy}" required>
+                <label for="cantidad">Cantidad en kg</label>
+                <input id="cantidad" name="cantidad" type="number" step="0.001" min="0.001" max="999999999.999" required>
+                <button class="boton" type="submit">Registrar cosecha</button>
+            </form>
+        </section>
+        <section class="seccion-modulo">
+            <h2>Lotes propios</h2>
+            <p th:if="${lotes.isEmpty()}">Aún no hay lotes.</p>
+            <ul class="registros">
+                <li class="tarjeta registro" th:each="l : ${lotes}">
+                    <a class="enlace-registro" th:href="@{/apiarios/{id}/produccion/lotes/{lote}(id=${apiario.id},lote=${l.id})}"
+                       th:text="${l.codigo}"></a>
+                    <span class="estado" th:text="${l.publicado ? 'Publicado' : 'Borrador'}"></span>
+                </li>
+            </ul>
+            <form class="tarjeta formulario" th:unless="${apiario.archivado}" method="post"
+                  th:action="@{/apiarios/{id}/produccion/lotes(id=${apiario.id})}">
+                <label for="codigo">Código del lote</label>
+                <input id="codigo" name="codigo" maxlength="80" required>
+                <button class="boton" type="submit">Crear lote</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

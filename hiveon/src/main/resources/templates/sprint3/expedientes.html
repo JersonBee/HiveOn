@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Expedientes remitidos · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area">
+        <h1>Expedientes remitidos</h1>
+        <p>Revisión interna del inspector sanitario simulado.</p>
+        <p th:if="${expedientes.isEmpty()}">Aún no hay expedientes disponibles.</p>
+        <ul class="registros">
+            <li class="tarjeta registro" th:each="e : ${expedientes}">
+                <a class="enlace-registro" th:href="@{/expedientes/{id}(id=${e.id})}" th:text="|${e.apiario} · ${e.fecha}|"></a>
+                <span class="estado" th:text="${e.decision ?: 'Pendiente'}"></span>
+            </li>
+        </ul>
+    </main>
+</body>
+</html>

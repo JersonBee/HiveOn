@@ -12,7 +12,7 @@
         <h1>Revisa los datos</h1>
         <p class="aviso aviso-error" role="alert" th:text="${mensaje}"></p>
         <div class="acciones-modulo">
-            <a class="boton" th:href="@{${regreso}}">Volver a la gestión</a>
+            <a class="boton" th:href="@{${regreso}}" th:text="${etiquetaRegreso ?: 'Volver a la gestión'}">Volver</a>
         </div>
     </main>
 </body>

@@ -2,6 +2,7 @@ package com.hiveon.controller;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,7 @@ class AccesoController {
         model.addAttribute("puedeConsultarApiarios", usuario.getAuthorities().stream()
                 .anyMatch(autoridad -> java.util.Set.of("ROLE_APICULTOR", "ROLE_OPERARIO", "ROLE_TECNICO")
                         .contains(autoridad.getAuthority())));
+        model.addAttribute("roles", AuthorityUtils.authorityListToSet(usuario.getAuthorities()));
         return "inicio";
     }
 }

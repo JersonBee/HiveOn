@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Editar cuenta · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area">
+        <a class="volver" th:href="@{/administracion}">Volver a Administración</a>
+        <h1>Editar cuenta</h1>
+        <form class="tarjeta formulario area-formulario" method="post" th:action="@{/administracion/usuarios/{id}(id=${cuenta.id})}">
+            <label for="nombre">Nombre</label><input id="nombre" name="nombre" maxlength="160" th:value="${cuenta.nombre}" required>
+            <label for="correo">Correo</label><input id="correo" name="correo" type="email" maxlength="100" th:value="${cuenta.correo}" required>
+            <label for="rol">Rol</label>
+            <select id="rol" name="rol" required>
+                <option th:each="r : ${catalogoRoles}" th:value="${r.codigo}" th:selected="${r.codigo == cuenta.rol_codigo}"
+                        th:text="${r.nombre}"></option>
+            </select>
+            <label><input type="checkbox" name="habilitado" value="true" th:checked="${cuenta.habilitado}"> Cuenta habilitada</label>
+            <label for="clave">Nueva contraseña (opcional)</label>
+            <input id="clave" name="clave" type="password" minlength="8" maxlength="72" autocomplete="new-password">
+            <button class="boton" type="submit">Guardar cuenta</button>
+        </form>
+    </main>
+</body>
+</html>

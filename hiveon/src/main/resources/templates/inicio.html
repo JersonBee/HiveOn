@@ -12,6 +12,9 @@
         <h1>Inicio</h1>
         <p>Tu sesión está activa.</p>
         <a th:if="${puedeConsultarApiarios}" class="boton" th:href="@{/apiarios}">Mis apiarios</a>
+        <a th:if="${roles.contains('ROLE_COMPRADOR')}" class="boton" th:href="@{/lotes}">Lotes publicados</a>
+        <a th:if="${roles.contains('ROLE_INSPECTOR')}" class="boton" th:href="@{/expedientes}">Expedientes remitidos</a>
+        <a th:if="${roles.contains('ROLE_ADMINISTRADOR')}" class="boton" th:href="@{/administracion}">Administración</a>
     </main>
 </body>
 </html>

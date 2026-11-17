@@ -13,6 +13,12 @@
         <h1 th:text="${acceso.nombre}">Apiario</h1>
         <p class="aviso" th:if="${acceso.archivado}">Apiario archivado</p>
 
+        <nav class="acciones-modulo" aria-label="Módulos del apiario" th:if="${acceso.propietario()}">
+            <a class="boton boton-secundario" th:href="@{/apiarios/{id}/produccion(id=${apiarioId})}">Producción y lotes</a>
+            <a class="boton boton-secundario" th:href="@{/apiarios/{id}/expedientes(id=${apiarioId})}">Revisión sanitaria</a>
+            <a class="boton boton-secundario" th:href="@{/apiarios/{id}/reportes(id=${apiarioId})}">Reportes</a>
+        </nav>
+
         <div class="acciones-modulo" th:if="${acceso.propietario() and !acceso.archivado}">
             <a class="boton boton-secundario" th:href="@{/apiarios/{id}/editar(id=${apiarioId})}">Editar apiario</a>
             <form th:action="@{/apiarios/{id}/archivar(id=${apiarioId})}" method="post">

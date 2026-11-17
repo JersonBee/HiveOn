@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Revisión sanitaria · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area">
+        <a class="volver" th:href="@{/apiarios/{id}/gestion(id=${apiario.id})}">Volver a la gestión</a>
+        <h1>Revisión sanitaria</h1>
+        <p th:text="${apiario.nombre}"></p>
+        <p th:if="${expedientes.isEmpty()}">Aún no hay expedientes remitidos.</p>
+        <ul class="registros">
+            <li class="tarjeta" th:each="e : ${expedientes}">
+                <strong th:text="|${e.fecha} · ${e.decision ?: 'Pendiente'}|"></strong>
+                <p class="texto-registro" th:text="${e.descripcion}"></p>
+            </li>
+        </ul>
+        <form class="tarjeta formulario" th:unless="${apiario.archivado}" method="post"
+              th:action="@{/apiarios/{id}/expedientes(id=${apiario.id})}">
+            <label for="descripcion">Información sanitaria del expediente</label>
+            <textarea id="descripcion" name="descripcion" maxlength="4000" rows="5" required></textarea>
+            <button class="boton" type="submit">Remitir expediente</button>
+        </form>
+    </main>
+</body>
+</html>

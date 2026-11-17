@@ -22,7 +22,12 @@ public class SeguridadConfig {
                         .requestMatchers("/", "/ingresar", "/css/**", "/img/**", "/fonts/**", "/error").permitAll()
                         .requestMatchers(HttpMethod.POST, "/apiarios").hasRole("APICULTOR")
                         .requestMatchers("/apiarios/nuevo").hasRole("APICULTOR")
+                        .requestMatchers("/apiarios/*/produccion/**", "/apiarios/*/reportes",
+                                "/apiarios/*/expedientes").hasRole("APICULTOR")
                         .requestMatchers("/apiarios", "/apiarios/**").hasAnyRole("APICULTOR", "OPERARIO", "TECNICO")
+                        .requestMatchers("/lotes", "/lotes/**").hasRole("COMPRADOR")
+                        .requestMatchers("/expedientes", "/expedientes/**").hasRole("INSPECTOR")
+                        .requestMatchers("/administracion", "/administracion/**").hasRole("ADMINISTRADOR")
                         .anyRequest().authenticated())
                 .formLogin(login -> login
                         .loginPage("/ingresar")

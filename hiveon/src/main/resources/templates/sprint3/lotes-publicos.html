@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lotes publicados · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area">
+        <h1>Lotes publicados</h1>
+        <form method="get" th:action="@{/lotes}" class="tarjeta formulario area-formulario">
+            <label for="codigo">Código del lote</label>
+            <input id="codigo" name="codigo" th:value="${codigo}">
+            <button type="submit" class="boton">Buscar lote</button>
+        </form>
+        <p th:if="${lotes.isEmpty()}">No hay lotes publicados para esta consulta.</p>
+        <ul class="registros">
+            <li class="tarjeta registro" th:each="l : ${lotes}">
+                <a class="enlace-registro" th:href="@{/lotes/{id}(id=${l.id})}" th:text="${l.codigo}"></a>
+                <span th:text="|${l.municipio}, ${l.departamento}|"></span>
+            </li>
+        </ul>
+    </main>
+</body>
+</html>

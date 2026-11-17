@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administración · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area">
+        <h1>Administración</h1>
+        <nav class="acciones-modulo">
+            <a class="boton boton-secundario" th:href="@{/administracion/auditoria}">Consultar auditoría</a>
+        </nav>
+        <section class="seccion-modulo">
+            <h2>Usuarios</h2>
+            <ul class="registros">
+                <li class="tarjeta registro" th:each="u : ${cuentas}">
+                    <div>
+                        <a class="enlace-registro" th:href="@{/administracion/usuarios/{id}(id=${u.id})}"
+                           th:text="${u.nombre}"></a>
+                        <div th:text="|${u.correo} · ${u.rol_codigo}|"></div>
+                    </div>
+                    <span class="estado" th:text="${u.habilitado ? 'Habilitada' : 'Inhabilitada'}"></span>
+                </li>
+            </ul>
+            <form class="tarjeta formulario area-formulario" method="post" th:action="@{/administracion/usuarios}">
+                <h3>Crear cuenta</h3>
+                <label for="nombre">Nombre</label><input id="nombre" name="nombre" maxlength="160" required>
+                <label for="correo">Correo</label><input id="correo" name="correo" type="email" maxlength="100" required>
+                <label for="rol">Rol</label>
+                <select id="rol" name="rol" required>
+                    <option value="">Selecciona un rol</option>
+                    <option th:each="r : ${catalogoRoles}" th:value="${r.codigo}" th:text="${r.nombre}"></option>
+                </select>
+                <label for="clave">Contraseña</label>
+                <input id="clave" name="clave" type="password" minlength="8" maxlength="72" autocomplete="new-password" required>
+                <button class="boton" type="submit">Crear cuenta</button>
+            </form>
+        </section>
+        <section class="seccion-modulo">
+            <h2>Catálogo de tipos de colmena</h2>
+            <p th:if="${tipos.isEmpty()}">Aún no hay tipos registrados.</p>
+            <ul class="registros">
+                <li class="tarjeta" th:each="t : ${tipos}">
+                    <form class="formulario" method="post" th:action="@{/administracion/tipos-colmena/{id}(id=${t.id})}">
+                        <label th:for="|tipo-${t.id}|">Nombre del tipo</label>
+                        <input th:id="|tipo-${t.id}|" name="nombre" th:value="${t.nombre}" maxlength="100" required>
+                        <label><input type="checkbox" name="habilitado" value="true" th:checked="${t.habilitado}"> Habilitado</label>
+                        <button class="boton boton-secundario" type="submit">Guardar tipo</button>
+                    </form>
+                </li>
+            </ul>
+            <form class="tarjeta formulario area-formulario" method="post" th:action="@{/administracion/tipos-colmena}">
+                <label for="tipo-nuevo">Nombre del nuevo tipo</label>
+                <input id="tipo-nuevo" name="nombre" maxlength="100" required>
+                <button class="boton" type="submit">Registrar tipo</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

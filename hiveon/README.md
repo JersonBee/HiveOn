@@ -105,3 +105,29 @@ Remove-Item Env:HIVEON_SPRINT2_INTEGRATION
 ```
 
 La prueba usa cuentas ficticias y revierte sus datos.
+
+## Sprint 3
+
+- El Apicultor registra cosechas en kilogramos, prepara lotes con cosechas
+  de un mismo apiario, publica lotes y consulta reportes sanitarios,
+  productivos y de tareas pendientes. La composición se edita mientras el
+  lote es un borrador.
+- El Apicultor remite expedientes y el Inspector Sanitario simulado revisa
+  antecedentes y registra una decisión interna por expediente.
+- El Comprador accede con su cuenta a los lotes publicados. La vista muestra
+  el origen registrado y las fechas de cosecha.
+- El Administrador crea y actualiza cuentas con un único rol, mantiene el
+  catálogo de tipos de colmena y consulta los eventos de auditoría. La
+  primera cuenta de Administrador se provisiona directamente en PostgreSQL
+  con un hash BCrypt, siguiendo las mismas reglas de las cuentas de prueba.
+
+Con las variables JDBC de una base de pruebas y las migraciones aplicadas,
+ejecuta las integraciones y la regresión en PowerShell:
+
+```powershell
+$env:HIVEON_SPRINT1_INTEGRATION = 'true'
+$env:HIVEON_SPRINT2_INTEGRATION = 'true'
+$env:HIVEON_SPRINT3_INTEGRATION = 'true'
+.\mvnw.cmd test
+Remove-Item Env:HIVEON_SPRINT1_INTEGRATION,Env:HIVEON_SPRINT2_INTEGRATION,Env:HIVEON_SPRINT3_INTEGRATION
+```
