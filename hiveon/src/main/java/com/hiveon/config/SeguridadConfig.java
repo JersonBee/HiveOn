@@ -2,6 +2,7 @@ package com.hiveon.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -19,7 +20,9 @@ public class SeguridadConfig {
         return http
                 .authorizeHttpRequests(acceso -> acceso
                         .requestMatchers("/", "/ingresar", "/css/**", "/img/**", "/fonts/**", "/error").permitAll()
-                        .requestMatchers("/apiarios", "/apiarios/**").hasRole("APICULTOR")
+                        .requestMatchers(HttpMethod.POST, "/apiarios").hasRole("APICULTOR")
+                        .requestMatchers("/apiarios/nuevo").hasRole("APICULTOR")
+                        .requestMatchers("/apiarios", "/apiarios/**").hasAnyRole("APICULTOR", "OPERARIO", "TECNICO")
                         .anyRequest().authenticated())
                 .formLogin(login -> login
                         .loginPage("/ingresar")

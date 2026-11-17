@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Colmena · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area area-formulario" th:with="activa=${!acceso.archivado and !colmena.archivada}">
+        <a class="volver" th:href="@{/apiarios/{id}/gestion(id=${apiarioId})}">Volver a la gestión</a>
+        <h1 th:text="|Colmena ${colmena.codigo}|">Colmena</h1>
+        <dl class="tarjeta datos-apiario">
+            <dt>Tipo</dt><dd th:text="${colmena.tipo ?: 'Sin indicar'}"></dd>
+            <dt>Instalación</dt><dd th:text="${colmena.fecha_instalacion ?: 'Sin indicar'}"></dd>
+            <dt>Estado</dt><dd th:text="${activa ? 'Activa' : 'Fuera de operación'}"></dd>
+        </dl>
+        <div th:if="${acceso.propietario() and activa}">
+            <form class="tarjeta formulario" th:action="@{/apiarios/{id}/colmenas/{c}/editar(id=${apiarioId},c=${colmena.id})}" method="post">
+                <h2>Editar colmena</h2>
+                <label for="codigo">Código</label>
+                <input id="codigo" name="codigo" th:value="${colmena.codigo}" required>
+                <label for="tipo">Tipo (opcional)</label>
+                <select id="tipo" name="tipo">
+                    <option value="">Sin indicar</option>
+                    <option th:each="t : ${tipos}" th:value="${t.id}"
+                            th:selected="${t.id == colmena.tipo_id}" th:text="${t.nombre}"></option>
+                </select>
+                <label for="instalacion">Fecha de instalación (opcional)</label>
+                <input id="instalacion" name="instalacion" type="date" th:value="${colmena.fecha_instalacion}" th:max="${hoy}">
+                <button class="boton" type="submit">Guardar cambios</button>
+            </form>
+            <form class="acciones-modulo" th:action="@{/apiarios/{id}/colmenas/{c}/archivar(id=${apiarioId},c=${colmena.id})}" method="post">
+                <button class="boton boton-secundario" type="submit">Archivar colmena</button>
+            </form>
+        </div>
+        <section class="seccion-modulo">
+            <h2>Inspecciones</h2>
+            <p th:if="${inspecciones.isEmpty()}">Aún no hay inspecciones.</p>
+            <ul class="registros">
+                <li class="tarjeta" th:each="i : ${inspecciones}">
+                    <strong th:text="|${i.fecha} · ${i.autor}|"></strong>
+                    <p class="texto-registro" th:text="${i.observaciones}"></p>
+                </li>
+            </ul>
+            <form class="tarjeta formulario" th:if="${activa and !acceso.tecnico()}"
+                  th:action="@{/apiarios/{id}/colmenas/{c}/inspecciones(id=${apiarioId},c=${colmena.id})}" method="post">
+                <label for="fecha-inspeccion">Fecha de inspección</label>
+                <input id="fecha-inspeccion" type="date" name="fecha" th:value="${hoy}" th:max="${hoy}" required>
+                <label for="observaciones">Observaciones</label>
+                <textarea id="observaciones" name="observaciones" rows="3" required></textarea>
+                <button class="boton" type="submit">Registrar inspección</button>
+            </form>
+        </section>
+        <section class="seccion-modulo" th:unless="${acceso.operario()}">
+            <h2>Tratamientos</h2>
+            <p th:if="${tratamientos.isEmpty()}">Aún no hay tratamientos.</p>
+            <ul class="registros">
+                <li class="tarjeta" th:each="t : ${tratamientos}">
+                    <strong th:text="|${t.fecha} · ${t.autor}|"></strong>
+                    <p class="texto-registro" th:text="${t.descripcion}"></p>
+                </li>
+            </ul>
+            <form class="tarjeta formulario" th:if="${activa and acceso.tecnico()}"
+                  th:action="@{/apiarios/{id}/colmenas/{c}/tratamientos(id=${apiarioId},c=${colmena.id})}" method="post">
+                <label for="fecha-tratamiento">Fecha del tratamiento</label>
+                <input id="fecha-tratamiento" type="date" name="fecha" th:value="${hoy}" th:max="${hoy}" required>
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" rows="3" required></textarea>
+                <button class="boton" type="submit">Registrar tratamiento</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

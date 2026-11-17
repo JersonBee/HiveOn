@@ -25,8 +25,9 @@ class AccesoController {
 
     @GetMapping("/inicio")
     String inicio(Authentication usuario, Model model) {
-        model.addAttribute("esApicultor", usuario.getAuthorities().stream()
-                .anyMatch(autoridad -> autoridad.getAuthority().equals("ROLE_APICULTOR")));
+        model.addAttribute("puedeConsultarApiarios", usuario.getAuthorities().stream()
+                .anyMatch(autoridad -> java.util.Set.of("ROLE_APICULTOR", "ROLE_OPERARIO", "ROLE_TECNICO")
+                        .contains(autoridad.getAuthority())));
         return "inicio";
     }
 }

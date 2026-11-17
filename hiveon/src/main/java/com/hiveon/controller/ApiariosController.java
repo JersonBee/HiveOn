@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,15 +25,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/apiarios")
 class ApiariosController {
 
-    private static final String CONSULTA_PROPIOS = """
+    private static final String CONSULTA_AUTORIZADOS = """
             select a.id, a.nombre, a.vereda, m.nombre as municipio,
                    d.nombre as departamento, a.archivado_en is not null as archivado
             from hiveon.apiarios a
-            join hiveon.usuarios u on u.id = a.propietario_id
+            cross join hiveon.usuarios u
             join hiveon.municipios m on m.codigo = a.municipio_codigo
             join hiveon.departamentos d on d.codigo = m.departamento_codigo
             where lower(u.correo) = lower(:correo) and u.habilitado
-              and u.rol_codigo = 'APICULTOR'
+              and ((u.rol_codigo = 'APICULTOR' and u.id = a.propietario_id)
+                or (u.rol_codigo in ('OPERARIO', 'TECNICO') and exists (
+                    select 1 from hiveon.vinculaciones_apiario v
+                    where v.apiario_id = a.id and v.usuario_id = u.id
+                      and v.funcion = u.rol_codigo and v.retirada_en is null)))
             """;
 
     private final JdbcClient jdbc;
@@ -42,8 +47,10 @@ class ApiariosController {
     }
 
     @GetMapping
-    String listar(Principal usuario, Model model) {
-        model.addAttribute("apiarios", jdbc.sql(CONSULTA_PROPIOS + " order by a.nombre, a.id")
+    String listar(Authentication usuario, Model model) {
+        model.addAttribute("puedeRegistrar", usuario.getAuthorities().stream()
+                .anyMatch(autoridad -> autoridad.getAuthority().equals("ROLE_APICULTOR")));
+        model.addAttribute("apiarios", jdbc.sql(CONSULTA_AUTORIZADOS + " order by a.nombre, a.id")
                 .param("correo", usuario.getName())
                 .query(Apiario.class)
                 .list());
@@ -52,7 +59,7 @@ class ApiariosController {
 
     @GetMapping("/{id}")
     String consultar(@PathVariable long id, Principal usuario, Model model) {
-        Apiario apiario = jdbc.sql(CONSULTA_PROPIOS + " and a.id = :id")
+        Apiario apiario = jdbc.sql(CONSULTA_AUTORIZADOS + " and a.id = :id")
                 .param("correo", usuario.getName())
                 .param("id", id)
                 .query(Apiario.class)

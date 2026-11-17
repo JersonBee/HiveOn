@@ -21,6 +21,7 @@
             <dt>Estado</dt>
             <dd th:text="${apiario.archivado ? 'Archivado' : 'Activo'}">Activo</dd>
         </dl>
+        <a class="boton" th:href="@{/apiarios/{id}/gestion(id=${apiario.id})}">Colmenas y seguimiento</a>
     </main>
 </body>
 </html>

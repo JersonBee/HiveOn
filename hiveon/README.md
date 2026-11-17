@@ -84,3 +84,24 @@ El recorrido en Edge también pasó con Supabase. El registro tardó 1.509 ms
 y la consulta 328 ms en esa ejecución. Se comprobó el aislamiento de una
 segunda cuenta en la vista móvil y que el registro permanecía en Supabase
 tras detener Spring. Los datos de demostración fueron retirados al terminar.
+
+## Sprint 2
+
+Desde el detalle de un apiario, **Colmenas y seguimiento** abre su gestión.
+El Apicultor puede editar y archivar sus registros, gestionar vinculaciones
+por correo, registrar inspecciones y asignar tareas. El Operario ve los
+apiarios asignados, registra inspecciones y actualiza sus tareas. El Técnico
+consulta los apiarios que asesora y registra tratamientos y recomendaciones.
+
+Retirar una vinculación elimina el acceso del usuario al apiario. El archivo
+conserva los registros previos y habilita su consulta según el rol.
+
+Para ejecutar la prueba de integración con las migraciones aplicadas:
+
+```powershell
+$env:HIVEON_SPRINT2_INTEGRATION = 'true'
+.\mvnw.cmd '-Dtest=Sprint2IntegracionTests' test
+Remove-Item Env:HIVEON_SPRINT2_INTEGRATION
+```
+
+La prueba usa cuentas ficticias y revierte sus datos.

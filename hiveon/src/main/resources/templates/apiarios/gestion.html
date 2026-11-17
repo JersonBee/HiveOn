@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestión de apiario · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area">
+        <a class="volver" th:href="@{/apiarios/{id}(id=${apiarioId})}">Volver al apiario</a>
+        <h1 th:text="${acceso.nombre}">Apiario</h1>
+        <p class="aviso" th:if="${acceso.archivado}">Apiario archivado</p>
+
+        <div class="acciones-modulo" th:if="${acceso.propietario() and !acceso.archivado}">
+            <a class="boton boton-secundario" th:href="@{/apiarios/{id}/editar(id=${apiarioId})}">Editar apiario</a>
+            <form th:action="@{/apiarios/{id}/archivar(id=${apiarioId})}" method="post">
+                <button class="boton boton-secundario" type="submit">Archivar apiario</button>
+            </form>
+        </div>
+
+        <section class="seccion-modulo">
+            <h2>Colmenas</h2>
+            <p th:if="${colmenas.isEmpty()}">Aún no hay colmenas registradas.</p>
+            <ul class="registros">
+                <li class="tarjeta registro" th:each="colmena : ${colmenas}">
+                    <a class="enlace-registro" th:href="@{/apiarios/{id}/colmenas/{c}(id=${apiarioId},c=${colmena.id})}"
+                       th:text="${colmena.codigo}">Colmena</a>
+                    <span class="estado" th:text="${colmena.archivada ? 'Archivada' : 'Activa'}">Activa</span>
+                </li>
+            </ul>
+            <form class="tarjeta formulario" th:if="${acceso.propietario() and !acceso.archivado}"
+                  th:action="@{/apiarios/{id}/colmenas(id=${apiarioId})}" method="post">
+                <h3>Registrar colmena</h3>
+                <label for="codigo">Código de la colmena</label>
+                <input id="codigo" name="codigo" required>
+                <label for="tipo">Tipo (opcional)</label>
+                <select id="tipo" name="tipo">
+                    <option value="">Sin indicar</option>
+                    <option th:each="t : ${tipos}" th:value="${t.id}" th:text="${t.nombre}"></option>
+                </select>
+                <label for="instalacion">Fecha de instalación (opcional)</label>
+                <input id="instalacion" name="instalacion" type="date" th:max="${hoy}">
+                <button class="boton" type="submit">Registrar colmena</button>
+            </form>
+        </section>
+
+        <section class="seccion-modulo" th:if="${acceso.propietario()}">
+            <h2>Vinculaciones</h2>
+            <p th:if="${vinculos.isEmpty()}">Aún no hay vinculaciones activas.</p>
+            <ul class="registros">
+                <li class="tarjeta registro" th:each="v : ${vinculos}">
+                    <div>
+                        <strong th:text="${v.nombre}"></strong>
+                        <div th:text="|${v.correo} · ${v.funcion}|"></div>
+                        <span class="estado" th:if="${v.suspendido}">Acceso suspendido</span>
+                    </div>
+                    <form th:unless="${acceso.archivado}"
+                          th:action="@{/apiarios/{id}/vinculaciones/{v}/retirar(id=${apiarioId},v=${v.id})}" method="post">
+                        <button class="boton boton-secundario" type="submit">Retirar vínculo</button>
+                    </form>
+                </li>
+            </ul>
+            <form class="tarjeta formulario" th:unless="${acceso.archivado}"
+                  th:action="@{/apiarios/{id}/vinculaciones(id=${apiarioId})}" method="post">
+                <label for="correo">Correo del operario o técnico</label>
+                <input id="correo" type="email" name="correo" required>
+                <button class="boton" type="submit">Vincular cuenta</button>
+            </form>
+        </section>
+
+        <section class="seccion-modulo" th:if="${acceso.propietario() or acceso.operario()}">
+            <h2 th:text="${acceso.operario() ? 'Mis tareas' : 'Tareas del apiario'}">Tareas</h2>
+            <p th:if="${tareas.isEmpty()}">Aún no hay tareas disponibles.</p>
+            <ul class="registros">
+                <li class="tarjeta" th:each="tarea : ${tareas}">
+                    <strong th:text="${tarea.descripcion}"></strong>
+                    <div th:text="|${tarea.operario} · Vence ${tarea.vencimiento}|"></div>
+                    <div th:text="${#strings.replace(tarea.estado, '_', ' ')}"></div>
+                    <div th:if="${tarea.retirada}">Vínculo retirado</div>
+                    <form class="formulario" th:if="${acceso.operario() and !acceso.archivado}"
+                          th:action="@{/apiarios/{id}/tareas/{t}/estado(id=${apiarioId},t=${tarea.id})}" method="post">
+                        <label th:for="|estado-${tarea.id}|">Estado</label>
+                        <select th:id="|estado-${tarea.id}|" name="estado">
+                            <option value="PENDIENTE" th:selected="${tarea.estado == 'PENDIENTE'}">Pendiente</option>
+                            <option value="EN_CURSO" th:selected="${tarea.estado == 'EN_CURSO'}">En curso</option>
+                            <option value="COMPLETADA" th:selected="${tarea.estado == 'COMPLETADA'}">Completada</option>
+                        </select>
+                        <button class="boton boton-secundario" type="submit">Guardar estado</button>
+                    </form>
+                </li>
+            </ul>
+            <form class="tarjeta formulario" th:if="${acceso.propietario() and !acceso.archivado}"
+                  th:action="@{/apiarios/{id}/tareas(id=${apiarioId})}" method="post">
+                <h3>Asignar tarea</h3>
+                <label for="vinculo">Operario vinculado</label>
+                <select id="vinculo" name="vinculo" required>
+                    <option value="">Selecciona un operario</option>
+                    <option th:each="v : ${vinculos}" th:if="${v.funcion == 'OPERARIO' and !v.suspendido}"
+                            th:value="${v.id}" th:text="${v.nombre}"></option>
+                </select>
+                <label for="actividad">Actividad</label>
+                <input id="actividad" name="descripcion" required>
+                <label for="vencimiento">Vencimiento</label>
+                <input id="vencimiento" name="vencimiento" type="date" th:min="${hoy}" required>
+                <button class="boton" type="submit">Asignar tarea</button>
+            </form>
+        </section>
+
+        <section class="seccion-modulo" th:unless="${acceso.operario()}">
+            <h2>Historial sanitario</h2>
+            <p th:if="${historialSanitario.isEmpty()}">Aún no hay inspecciones ni tratamientos registrados.</p>
+            <details th:unless="${historialSanitario.isEmpty()}">
+                <summary>Ver inspecciones y tratamientos</summary>
+                <ul class="registros">
+                    <li class="tarjeta" th:each="h : ${historialSanitario}">
+                        <strong th:text="|${h.tipo} · Colmena ${h.colmena}|"></strong>
+                        <div th:text="|${h.autor} · ${h.fecha}|"></div>
+                        <p class="texto-registro" th:text="${h.texto}"></p>
+                    </li>
+                </ul>
+            </details>
+            <h2>Recomendaciones sanitarias</h2>
+            <p th:if="${recomendaciones.isEmpty()}">Aún no hay recomendaciones.</p>
+            <ul class="registros">
+                <li class="tarjeta" th:each="r : ${recomendaciones}">
+                    <strong th:text="${r.colmena == null ? 'Apiario' : r.colmena}"></strong>
+                    <div th:text="|${r.autor} · ${r.fecha}|"></div>
+                    <p class="texto-registro" th:text="${r.contenido}"></p>
+                </li>
+            </ul>
+            <form class="tarjeta formulario" th:if="${acceso.tecnico() and !acceso.archivado}"
+                  th:action="@{/apiarios/{id}/recomendaciones(id=${apiarioId})}" method="post">
+                <label for="colmena-recomendacion">Destino</label>
+                <select id="colmena-recomendacion" name="colmena">
+                    <option value="">Todo el apiario</option>
+                    <option th:each="c : ${colmenas}" th:unless="${c.archivada}"
+                            th:value="${c.id}" th:text="${c.codigo}"></option>
+                </select>
+                <label for="contenido">Recomendación</label>
+                <textarea id="contenido" name="contenido" rows="3" required></textarea>
+                <button class="boton" type="submit">Registrar recomendación</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

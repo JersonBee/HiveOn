@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Editar apiario · HiveOn</title>
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+</head>
+<body>
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <main class="area area-formulario">
+        <a class="volver" th:href="@{/apiarios/{id}/gestion(id=${apiarioId})}">Volver a la gestión</a>
+        <h1>Editar apiario</h1>
+        <form class="tarjeta formulario" th:action="@{/apiarios/{id}/editar(id=${apiarioId})}" method="get">
+            <label for="departamento">Departamento</label>
+            <select id="departamento" name="departamento" required>
+                <option th:each="opcion : ${departamentos}" th:value="${opcion.codigo}"
+                        th:selected="${opcion.codigo == departamento}" th:text="${opcion.nombre}"></option>
+            </select>
+            <button class="boton boton-secundario" type="submit">Mostrar municipios</button>
+        </form>
+        <form class="tarjeta formulario" th:action="@{/apiarios/{id}/editar(id=${apiarioId})}" method="post">
+            <input type="hidden" name="departamento" th:value="${departamento}">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" th:value="${datos.nombre}" required>
+            <label for="municipio">Municipio</label>
+            <select id="municipio" name="municipio" required>
+                <option value="">Selecciona el municipio</option>
+                <option th:each="opcion : ${municipios}" th:value="${opcion.codigo}"
+                        th:selected="${opcion.codigo == datos.municipio}" th:text="${opcion.nombre}"></option>
+            </select>
+            <label for="vereda">Vereda (opcional)</label>
+            <input id="vereda" name="vereda" th:value="${datos.vereda}">
+            <button class="boton" type="submit">Guardar cambios</button>
+        </form>
+    </main>
+</body>
+</html>

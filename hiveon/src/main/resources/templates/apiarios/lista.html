@@ -11,7 +11,7 @@
     <main class="area">
         <div class="encabezado-modulo">
             <h1>Mis apiarios</h1>
-            <a class="boton" th:href="@{/apiarios/nuevo}">Registrar apiario</a>
+            <a th:if="${puedeRegistrar}" class="boton" th:href="@{/apiarios/nuevo}">Registrar apiario</a>
         </div>
         <p class="aviso aviso-exito" th:if="${registrado == true}" role="status">El apiario se registró correctamente.</p>
         <p class="tarjeta" th:if="${apiarios.isEmpty()}">Aún no tienes apiarios registrados.</p>

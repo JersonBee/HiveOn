@@ -119,7 +119,7 @@ class ApiariosControllerTests {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(not(containsString("Apiario propio"))));
         mvc.perform(get("/apiarios/7").with(user(CORREO).roles("OPERARIO")))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isNotFound());
     }
 
     private void catalogos() {
