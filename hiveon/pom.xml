@@ -147,4 +147,26 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>suite-completa</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<environmentVariables>
+								<HIVEON_SPRINT1_INTEGRATION>true</HIVEON_SPRINT1_INTEGRATION>
+								<HIVEON_SPRINT2_INTEGRATION>true</HIVEON_SPRINT2_INTEGRATION>
+								<HIVEON_SPRINT3_INTEGRATION>true</HIVEON_SPRINT3_INTEGRATION>
+								<HIVEON_DATABASE_INTEGRATION>true</HIVEON_DATABASE_INTEGRATION>
+							</environmentVariables>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>

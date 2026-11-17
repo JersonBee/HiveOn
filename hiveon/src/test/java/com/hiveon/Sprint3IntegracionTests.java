@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -107,6 +108,41 @@ class Sprint3IntegracionTests {
                 .andExpect(status().isConflict());
         mvc.perform(get(apiario + "/expedientes").with(user(propietario.correo()).roles(propietario.rol())))
                 .andExpect(content().string(containsString("VALIDADO")));
+    }
+
+    @Test
+    void rechazaUnExpedienteYConservaLaDecisionDelInspector() throws Exception {
+        Cuenta propietario = cuenta("APICULTOR");
+        Cuenta inspector = cuenta("INSPECTOR");
+        long apiario = jdbc.sql("""
+                insert into hiveon.apiarios(propietario_id,nombre,municipio_codigo)
+                values(:id,'Apiario para revisión','68001') returning id
+                """).param("id", propietario.id()).query(Long.class).single();
+        String expedientes = "/apiarios/" + apiario + "/expedientes";
+        var apicultor = user(propietario.correo()).roles(propietario.rol());
+        var usuarioInspector = user(inspector.correo()).roles(inspector.rol());
+        mvc.perform(post(expedientes).with(apicultor).with(csrf()).param("descripcion", " "))
+                .andExpect(status().isBadRequest());
+        assertEquals(0L, jdbc.sql("""
+                select count(*) from hiveon.expedientes_sanitarios where apiario_id=:id
+                """).param("id", apiario).query(Long.class).single());
+        mvc.perform(post(expedientes).with(apicultor).with(csrf()).param("descripcion", "Revisión de prueba"))
+                .andExpect(status().is3xxRedirection());
+        long expediente = jdbc.sql("select id from hiveon.expedientes_sanitarios where apiario_id=:id")
+                .param("id", apiario).query(Long.class).single();
+        String resolver = "/expedientes/" + expediente + "/resolver";
+        mvc.perform(post(resolver).with(usuarioInspector).with(csrf()).param("decision", "PENDIENTE"))
+                .andExpect(status().isBadRequest());
+        mvc.perform(post(resolver).with(usuarioInspector).with(csrf()).param("decision", "RECHAZADO")
+                        .param("observaciones", "Falta evidencia sanitaria"))
+                .andExpect(status().is3xxRedirection());
+        mvc.perform(get(expedientes).with(apicultor))
+                .andExpect(content().string(containsString("RECHAZADO")));
+        mvc.perform(get("/expedientes/" + expediente).with(usuarioInspector))
+                .andExpect(content().string(containsString("Falta evidencia sanitaria")));
+        assertEquals(inspector.id(), jdbc.sql("""
+                select inspector_id from hiveon.expedientes_sanitarios where id=:id and resuelto_en is not null
+                """).param("id", expediente).query(Long.class).single());
     }
 
     @Test

@@ -3,6 +3,24 @@
 Aplicación académica de gestión de apiarios. El proyecto usa Java 21 y el
 Maven Wrapper incluido.
 
+La [presentación del proyecto](../README.md) reúne los roles, los tres sprints,
+la arquitectura, el modelo de datos y las referencias.
+
+## Arquitectura MVC
+
+HiveOn es un monolito Spring MVC. El navegador envía formularios HTML y el
+controlador responde con una vista Thymeleaf o una redirección.
+
+- **Modelo.** `com.hiveon.model` contiene las consultas JDBC parametrizadas,
+  las reglas de negocio y acceso por registro, y los límites transaccionales
+  de las operaciones. PostgreSQL aplica las restricciones y disparadores
+  definidos en las migraciones.
+- **Vista.** `src/main/resources/templates` contiene las plantillas Thymeleaf.
+- **Controlador.** `com.hiveon.controller` recibe solicitudes, valida los
+  formularios, invoca el Modelo y prepara los datos y errores para las vistas.
+  Spring Security aplica el acceso por ruta y consulta las cuentas del Modelo
+  durante el inicio de sesión.
+
 ## Ejecución local en Windows
 
 Usa la cadena JDBC de Supabase y configura `sslmode=verify-full` junto con
@@ -18,9 +36,47 @@ $env:DB_PASSWORD = Read-Host 'Contraseña de PostgreSQL' -MaskInput
 .\mvnw.cmd spring-boot:run
 ```
 
-Usa PowerShell 7 para `-MaskInput`. Al arrancar, Hibernate valida las tablas
-que estén mapeadas por entidades. Para ejecutar las pruebas de integración,
-configura estas variables con una base de pruebas y ejecuta `.\mvnw.cmd test`.
+Usa PowerShell 7 para `-MaskInput`. Aplica las migraciones antes de iniciar
+la aplicación, que consulta el esquema `hiveon` mediante JDBC.
+
+## Suite de pruebas
+
+Usa Java 21 y una base PostgreSQL exclusiva para pruebas. En una base vacía,
+aplica las migraciones de `supabase/migrations` en orden por nombre. Desde
+`hiveon`, con `psql` disponible y los parámetros de conexión de la base de
+pruebas configurados en el cliente, puedes aplicarlas desde PowerShell:
+
+```powershell
+Get-ChildItem supabase/migrations/*.sql | Sort-Object Name | ForEach-Object {
+    psql -X -v ON_ERROR_STOP=1 --single-transaction -f $_.FullName
+    if ($LASTEXITCODE -ne 0) { throw "Falló la migración $($_.Name)" }
+}
+```
+
+Configura `DB_URL`, `DB_USERNAME` y `DB_PASSWORD` para esa misma base y ejecuta:
+
+```powershell
+.\mvnw.cmd -Psuite-completa verify
+```
+
+En Linux o macOS, usa `./mvnw -Psuite-completa verify`. El perfil activa
+todas las pruebas de integración y Maven escribe los resultados por clase
+en `target/surefire-reports`. Las integraciones revierten las filas de cada
+prueba. Usa una base separada de la de producción también para los cambios
+en secuencias.
+
+| Cobertura automatizada | Pruebas |
+| --- | --- |
+| Arranque de Spring, validación de formularios, BCrypt, autenticación, cierre de sesión, CSRF y aislamiento de apiarios | `HiveonApplicationTests`, `FormularioApiarioTests`, `SeguridadConfigTests`, `AccesoControllerTests`, `ApiariosControllerTests` |
+| Sprint 1 · ingreso y registro y consulta de apiarios propios con persistencia | `Sprint1IntegracionTests` |
+| Sprint 2 · colmenas, archivos, vinculaciones, inspecciones, tareas y seguimiento técnico | `Sprint2IntegracionTests` |
+| Sprint 3 · cosechas y lotes, trazabilidad, reportes, decisiones sanitarias, cuentas, catálogos y auditoría | `Sprint3IntegracionTests` |
+| PostgreSQL · municipio válido, fechas y marcas de tiempo, vencimiento de tareas, vínculos vigentes, origen de cosechas y composición de lotes publicados | `IntegridadPostgresqlTests` |
+
+Para ejecutar solo las pruebas unitarias y MVC que usan dependencias
+simuladas, ejecuta `.\mvnw.cmd '-Dtest=controller.*Tests,config.*Tests' test`.
+La revisión visual en navegadores y las mediciones de tiempos de respuesta
+se realizan aparte.
 
 ## Sprint 1
 
@@ -121,13 +177,4 @@ La prueba usa cuentas ficticias y revierte sus datos.
   primera cuenta de Administrador se provisiona directamente en PostgreSQL
   con un hash BCrypt, siguiendo las mismas reglas de las cuentas de prueba.
 
-Con las variables JDBC de una base de pruebas y las migraciones aplicadas,
-ejecuta las integraciones y la regresión en PowerShell:
-
-```powershell
-$env:HIVEON_SPRINT1_INTEGRATION = 'true'
-$env:HIVEON_SPRINT2_INTEGRATION = 'true'
-$env:HIVEON_SPRINT3_INTEGRATION = 'true'
-.\mvnw.cmd test
-Remove-Item Env:HIVEON_SPRINT1_INTEGRATION,Env:HIVEON_SPRINT2_INTEGRATION,Env:HIVEON_SPRINT3_INTEGRATION
-```
+La [suite completa](#suite-de-pruebas) incluye las integraciones del Sprint 3.

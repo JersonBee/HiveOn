@@ -3,7 +3,8 @@
 <body>
     <header class="barra" th:fragment="barra">
         <a class="marca" th:href="@{/inicio}" aria-label="Inicio de HiveOn">
-            <img class="logo logo-barra" th:src="@{/img/hiveon-logo.png}" alt="HiveOn">
+            <span class="simbolo-marca"><img class="logo logo-barra" th:src="@{/img/hiveon-logo.png}" alt=""></span>
+            <span>HiveOn</span>
         </a>
         <form th:action="@{/salir}" method="post">
             <button class="boton boton-secundario" type="submit">Cerrar sesión</button>

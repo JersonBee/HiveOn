@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.hiveon.config.SeguridadConfig;
+import com.hiveon.model.Apiarios;
+import com.hiveon.model.Cuentas;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -30,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ApiariosController.class)
-@Import(SeguridadConfig.class)
+@Import({SeguridadConfig.class, Apiarios.class, Cuentas.class})
 class ApiariosControllerTests {
 
     private static final String CORREO = "apiarios@example.test";
@@ -99,17 +101,17 @@ class ApiariosControllerTests {
 
     @Test
     void muestraElListadoVacioYElDetallePropioPeroNoUnRegistroAjeno() throws Exception {
-        JdbcClient.MappedQuerySpec<ApiariosController.Apiario> listado =
-                consulta("order by a.nombre", ApiariosController.Apiario.class);
+        JdbcClient.MappedQuerySpec<Apiarios.Apiario> listado =
+                consulta("order by a.nombre", Apiarios.Apiario.class);
         when(listado.list()).thenReturn(List.of());
         mvc.perform(get("/apiarios").with(user(CORREO).roles("APICULTOR")))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Aún no tienes apiarios registrados.")));
 
-        JdbcClient.MappedQuerySpec<ApiariosController.Apiario> detalle =
-                consulta("and a.id = :id", ApiariosController.Apiario.class);
+        JdbcClient.MappedQuerySpec<Apiarios.Apiario> detalle =
+                consulta("and a.id = :id", Apiarios.Apiario.class);
         when(detalle.optional()).thenReturn(
-                Optional.of(new ApiariosController.Apiario(7, "Apiario propio", null,
+                Optional.of(new Apiarios.Apiario(7, "Apiario propio", null,
                         "BUCARAMANGA", "SANTANDER", false)))
                 .thenReturn(Optional.empty());
         mvc.perform(get("/apiarios/7").with(user(CORREO).roles("APICULTOR")))
@@ -123,10 +125,10 @@ class ApiariosControllerTests {
     }
 
     private void catalogos() {
-        when(consulta("from hiveon.departamentos order", ApiariosController.Ubicacion.class).list())
-                .thenReturn(List.of(new ApiariosController.Ubicacion("68", "SANTANDER")));
-        when(consulta("from hiveon.municipios", ApiariosController.Ubicacion.class).list())
-                .thenReturn(List.of(new ApiariosController.Ubicacion("68001", "BUCARAMANGA")));
+        when(consulta("from hiveon.departamentos order", Apiarios.Ubicacion.class).list())
+                .thenReturn(List.of(new Apiarios.Ubicacion("68", "SANTANDER")));
+        when(consulta("from hiveon.municipios", Apiarios.Ubicacion.class).list())
+                .thenReturn(List.of(new Apiarios.Ubicacion("68001", "BUCARAMANGA")));
     }
 
     @SuppressWarnings("unchecked")

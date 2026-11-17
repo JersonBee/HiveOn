@@ -9,20 +9,21 @@
 <body>
     <header th:replace="~{fragmentos :: barra}"></header>
     <main class="area">
-        <h1>Administración</h1>
-        <nav class="acciones-modulo">
+        <div class="encabezado-modulo">
+            <h1>Administración</h1>
             <a class="boton boton-secundario" th:href="@{/administracion/auditoria}">Consultar auditoría</a>
-        </nav>
-        <section class="seccion-modulo">
+        </div>
+        <section class="seccion-modulo panel-administracion">
             <h2>Usuarios</h2>
-            <ul class="registros">
+            <ul class="registros cuentas">
                 <li class="tarjeta registro" th:each="u : ${cuentas}">
                     <div>
                         <a class="enlace-registro" th:href="@{/administracion/usuarios/{id}(id=${u.id})}"
                            th:text="${u.nombre}"></a>
                         <div th:text="|${u.correo} · ${u.rol_codigo}|"></div>
                     </div>
-                    <span class="estado" th:text="${u.habilitado ? 'Habilitada' : 'Inhabilitada'}"></span>
+                    <span class="estado" th:classappend="${!u.habilitado ? 'estado-inactivo' : ''}"
+                          th:text="${u.habilitado ? 'Habilitada' : 'Inhabilitada'}"></span>
                 </li>
             </ul>
             <form class="tarjeta formulario area-formulario" method="post" th:action="@{/administracion/usuarios}">

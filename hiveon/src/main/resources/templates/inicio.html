@@ -9,12 +9,32 @@
 <body>
     <header th:replace="~{fragmentos :: barra}"></header>
     <main class="area">
-        <h1>Inicio</h1>
-        <p>Tu sesión está activa.</p>
-        <a th:if="${puedeConsultarApiarios}" class="boton" th:href="@{/apiarios}">Mis apiarios</a>
-        <a th:if="${roles.contains('ROLE_COMPRADOR')}" class="boton" th:href="@{/lotes}">Lotes publicados</a>
-        <a th:if="${roles.contains('ROLE_INSPECTOR')}" class="boton" th:href="@{/expedientes}">Expedientes remitidos</a>
-        <a th:if="${roles.contains('ROLE_ADMINISTRADOR')}" class="boton" th:href="@{/administracion}">Administración</a>
+        <section class="bienvenida">
+            <h1>Inicio</h1>
+            <img class="logo" th:src="@{/img/hiveon-logo.png}" alt="">
+        </section>
+        <nav class="accesos-inicio" aria-label="Módulos disponibles">
+            <a th:if="${puedeConsultarApiarios}" class="tarjeta acceso-modulo" th:href="@{/apiarios}">
+                <strong>Mis apiarios</strong>
+                <span>Consulta tus apiarios, colmenas y actividad de campo.</span>
+            </a>
+            <a th:if="${roles.contains('ROLE_COMPRADOR')}" class="tarjeta acceso-modulo" th:href="@{/lotes}">
+                <strong>Lotes publicados</strong>
+                <span>Consulta el origen y la fecha de cosecha de la miel.</span>
+            </a>
+            <a th:if="${roles.contains('ROLE_INSPECTOR')}" class="tarjeta acceso-modulo" th:href="@{/expedientes}">
+                <strong>Expedientes remitidos</strong>
+                <span>Revisa antecedentes sanitarios y registra decisiones.</span>
+            </a>
+            <a th:if="${roles.contains('ROLE_ADMINISTRADOR')}" class="tarjeta acceso-modulo" th:href="@{/administracion}">
+                <strong>Administración</strong>
+                <span>Gestiona cuentas y tipos de colmena.</span>
+            </a>
+            <a th:if="${roles.contains('ROLE_ADMINISTRADOR')}" class="tarjeta acceso-modulo" th:href="@{/administracion/auditoria}">
+                <strong>Auditoría</strong>
+                <span>Consulta quién realizó cada operación y su resultado.</span>
+            </a>
+        </nav>
     </main>
 </body>
 </html>

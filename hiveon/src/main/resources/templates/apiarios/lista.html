@@ -14,15 +14,16 @@
             <a th:if="${puedeRegistrar}" class="boton" th:href="@{/apiarios/nuevo}">Registrar apiario</a>
         </div>
         <p class="aviso aviso-exito" th:if="${registrado == true}" role="status">El apiario se registró correctamente.</p>
-        <p class="tarjeta" th:if="${apiarios.isEmpty()}">Aún no tienes apiarios registrados.</p>
-        <ul class="registros" th:unless="${apiarios.isEmpty()}">
+        <p class="tarjeta estado-vacio" th:if="${apiarios.isEmpty()}">Aún no tienes apiarios registrados.</p>
+        <ul class="registros tarjetas-apiarios" th:unless="${apiarios.isEmpty()}">
             <li class="tarjeta registro" th:each="apiario : ${apiarios}">
                 <div>
                     <a class="enlace-registro" th:href="@{/apiarios/{id}(id=${apiario.id})}"
                        th:text="${apiario.nombre}">Apiario</a>
                     <div th:text="|${apiario.municipio}, ${apiario.departamento}|">Ubicación</div>
                 </div>
-                <span class="estado" th:text="${apiario.archivado ? 'Archivado' : 'Activo'}">Activo</span>
+                <span class="estado" th:classappend="${apiario.archivado ? 'estado-inactivo' : ''}"
+                      th:text="${apiario.archivado ? 'Archivado' : 'Activo'}">Activo</span>
             </li>
         </ul>
     </main>

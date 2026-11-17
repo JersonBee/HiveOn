@@ -1,9 +1,9 @@
 package com.hiveon.config;
 
+import com.hiveon.model.Cuentas;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -46,19 +46,13 @@ public class SeguridadConfig {
     }
 
     @Bean
-    UserDetailsService usuarios(JdbcClient jdbc) {
-        return correo -> jdbc.sql("""
-                select correo, contrasena_hash, rol_codigo, habilitado
-                from hiveon.usuarios
-                where lower(correo) = lower(:correo)
-                """)
-                .param("correo", correo.strip())
-                .query((fila, numero) -> User.withUsername(fila.getString("correo"))
-                        .password(fila.getString("contrasena_hash"))
-                        .roles(fila.getString("rol_codigo"))
-                        .disabled(!fila.getBoolean("habilitado"))
+    UserDetailsService usuarios(Cuentas cuentas) {
+        return correo -> cuentas.buscarCredenciales(correo)
+                .map(cuenta -> User.withUsername(cuenta.correo())
+                        .password(cuenta.hash())
+                        .roles(cuenta.rol())
+                        .disabled(!cuenta.habilitada())
                         .build())
-                .optional()
                 .orElseThrow(() -> new UsernameNotFoundException("Cuenta no disponible"));
     }
 }

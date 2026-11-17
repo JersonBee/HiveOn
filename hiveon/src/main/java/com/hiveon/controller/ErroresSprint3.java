@@ -1,10 +1,10 @@
 package com.hiveon.controller;
 
+import com.hiveon.model.OperacionRechazada;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice(assignableTypes = {ProduccionController.class, RevisionSanitariaController.class,
@@ -17,17 +17,26 @@ class ErroresSprint3 {
                 + "o la operación ya no está disponible.");
     }
 
-    @ExceptionHandler(ResponseStatusException.class)
-    ModelAndView estado(ResponseStatusException error) {
-        String mensaje = switch (error.getStatusCode().value()) {
-            case 403 -> "Tu cuenta no tiene acceso a esta operación.";
-            case 404 -> "El registro solicitado no está disponible.";
-            default -> error.getReason();
+    @ExceptionHandler(OperacionRechazada.class)
+    ModelAndView estado(OperacionRechazada error) {
+        String mensaje = switch (error.motivo()) {
+            case SIN_ACCESO -> "Tu cuenta no tiene acceso a esta operación.";
+            case NO_ENCONTRADO -> "El registro solicitado no está disponible.";
+            default -> error.getMessage();
         };
-        return vista(error.getStatusCode(), mensaje);
+        return vista(estadoHttp(error), mensaje);
     }
 
-    private static ModelAndView vista(org.springframework.http.HttpStatusCode estado, String mensaje) {
+    static HttpStatus estadoHttp(OperacionRechazada error) {
+        return switch (error.motivo()) {
+            case DATOS_INVALIDOS -> HttpStatus.BAD_REQUEST;
+            case SIN_ACCESO -> HttpStatus.FORBIDDEN;
+            case NO_ENCONTRADO -> HttpStatus.NOT_FOUND;
+            case CONFLICTO -> HttpStatus.CONFLICT;
+        };
+    }
+
+    private static ModelAndView vista(HttpStatus estado, String mensaje) {
         ModelAndView vista = new ModelAndView("apiarios/operacion-invalida");
         vista.setStatus(estado);
         vista.addObject("mensaje", mensaje);

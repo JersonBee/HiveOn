@@ -1,13 +1,12 @@
 package com.hiveon.controller;
 
 import java.security.Principal;
-import java.util.List;
 
+import com.hiveon.model.Apiarios;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,45 +24,23 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/apiarios")
 class ApiariosController {
 
-    private static final String CONSULTA_AUTORIZADOS = """
-            select a.id, a.nombre, a.vereda, m.nombre as municipio,
-                   d.nombre as departamento, a.archivado_en is not null as archivado
-            from hiveon.apiarios a
-            cross join hiveon.usuarios u
-            join hiveon.municipios m on m.codigo = a.municipio_codigo
-            join hiveon.departamentos d on d.codigo = m.departamento_codigo
-            where lower(u.correo) = lower(:correo) and u.habilitado
-              and ((u.rol_codigo = 'APICULTOR' and u.id = a.propietario_id)
-                or (u.rol_codigo in ('OPERARIO', 'TECNICO') and exists (
-                    select 1 from hiveon.vinculaciones_apiario v
-                    where v.apiario_id = a.id and v.usuario_id = u.id
-                      and v.funcion = u.rol_codigo and v.retirada_en is null)))
-            """;
+    private final Apiarios apiarios;
 
-    private final JdbcClient jdbc;
-
-    ApiariosController(JdbcClient jdbc) {
-        this.jdbc = jdbc;
+    ApiariosController(Apiarios apiarios) {
+        this.apiarios = apiarios;
     }
 
     @GetMapping
     String listar(Authentication usuario, Model model) {
         model.addAttribute("puedeRegistrar", usuario.getAuthorities().stream()
                 .anyMatch(autoridad -> autoridad.getAuthority().equals("ROLE_APICULTOR")));
-        model.addAttribute("apiarios", jdbc.sql(CONSULTA_AUTORIZADOS + " order by a.nombre, a.id")
-                .param("correo", usuario.getName())
-                .query(Apiario.class)
-                .list());
+        model.addAttribute("apiarios", apiarios.listar(usuario.getName()));
         return "apiarios/lista";
     }
 
     @GetMapping("/{id}")
     String consultar(@PathVariable long id, Principal usuario, Model model) {
-        Apiario apiario = jdbc.sql(CONSULTA_AUTORIZADOS + " and a.id = :id")
-                .param("correo", usuario.getName())
-                .param("id", id)
-                .query(Apiario.class)
-                .optional()
+        var apiario = apiarios.consultar(id, usuario.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         model.addAttribute("apiario", apiario);
         return "apiarios/detalle";
@@ -80,22 +57,8 @@ class ApiariosController {
     String registrar(@Valid @ModelAttribute("formulario") Formulario formulario, BindingResult errores,
                      Principal usuario, Model model, RedirectAttributes redirect) {
         if (!errores.hasErrors()) {
-            int registrados = jdbc.sql("""
-                    insert into hiveon.apiarios (propietario_id, nombre, municipio_codigo, vereda)
-                    select u.id, :nombre, m.codigo, nullif(:vereda, '')
-                    from hiveon.usuarios u
-                    join hiveon.municipios m on m.codigo = :municipio
-                        and m.departamento_codigo = :departamento
-                    where lower(u.correo) = lower(:correo) and u.habilitado
-                      and u.rol_codigo = 'APICULTOR'
-                    """)
-                    .param("correo", usuario.getName())
-                    .param("nombre", formulario.nombre().strip())
-                    .param("vereda", formulario.vereda() == null ? "" : formulario.vereda().strip())
-                    .param("municipio", formulario.municipio())
-                    .param("departamento", formulario.departamento())
-                    .update();
-            if (registrados == 1) {
+            if (apiarios.registrar(usuario.getName(), formulario.nombre(), formulario.departamento(),
+                    formulario.municipio(), formulario.vereda())) {
                 redirect.addFlashAttribute("registrado", true);
                 return "redirect:/apiarios";
             }
@@ -107,20 +70,13 @@ class ApiariosController {
     }
 
     private void cargarUbicaciones(String departamento, boolean intentoDeRegistro, Model model) {
-        List<Ubicacion> departamentos = jdbc.sql("""
-                select codigo, nombre from hiveon.departamentos order by nombre
-                """).query(Ubicacion.class).list();
-        boolean seleccionado = departamentos.stream().anyMatch(d -> d.codigo().equals(departamento));
-        model.addAttribute("departamentos", departamentos);
+        var ubicaciones = apiarios.ubicaciones(departamento);
+        boolean seleccionado = ubicaciones.seleccionado();
+        model.addAttribute("departamentos", ubicaciones.departamentos());
         model.addAttribute("departamentoSeleccionado", seleccionado);
         model.addAttribute("departamentoInvalido",
                 !seleccionado && (intentoDeRegistro || departamento != null && !departamento.isBlank()));
-        model.addAttribute("municipios", seleccionado
-                ? jdbc.sql("""
-                        select codigo, nombre from hiveon.municipios
-                        where departamento_codigo = :departamento order by nombre
-                        """).param("departamento", departamento).query(Ubicacion.class).list()
-                : List.of());
+        model.addAttribute("municipios", ubicaciones.municipios());
     }
 
     public record Formulario(
@@ -130,12 +86,5 @@ class ApiariosController {
             @Pattern(regexp = "([0-9]{5})?", message = "Selecciona un municipio.")
             @NotBlank(message = "Selecciona un municipio.") String municipio,
             String vereda) {
-    }
-
-    public record Ubicacion(String codigo, String nombre) {
-    }
-
-    public record Apiario(long id, String nombre, String vereda, String municipio, String departamento,
-                          boolean archivado) {
     }
 }

@@ -1,13 +1,13 @@
-package com.hiveon.controller;
+package com.hiveon.model;
 
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.stereotype.Component;
 
+@Component
 record AccesoModulos(JdbcClient jdbc) {
 
     static final ZoneId BOGOTA = ZoneId.of("America/Bogota");
@@ -19,17 +19,17 @@ record AccesoModulos(JdbcClient jdbc) {
                 """ + (escritura ? " for share" : ""))
                 .param("correo", principal.getName()).param("rol", rol)
                 .query(Long.class).optional()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
+                .orElseThrow(() -> OperacionRechazada.sinAcceso());
     }
 
-    Apiario apiario(long apiario, Principal principal, boolean escribir) {
+    Apiarios.ApiarioPropio apiario(long apiario, Principal principal, boolean escribir) {
         long cuenta = cuenta(principal, "APICULTOR", escribir);
-        Apiario datos = jdbc.sql("""
+        Apiarios.ApiarioPropio datos = jdbc.sql("""
                 select a.id, a.nombre, a.propietario_id, a.archivado_en is not null as archivado
                 from hiveon.apiarios a where a.id=:apiario and a.propietario_id=:propietario
                 """ + (escribir ? " for update" : ""))
                 .param("apiario", apiario).param("propietario", cuenta)
-                .query(Apiario.class).optional().orElseThrow(AccesoModulos::noEncontrado);
+                .query(Apiarios.ApiarioPropio.class).optional().orElseThrow(AccesoModulos::noEncontrado);
         if (escribir && datos.archivado()) {
             throw invalido("El apiario está archivado.");
         }
@@ -58,13 +58,11 @@ record AccesoModulos(JdbcClient jdbc) {
         return fecha;
     }
 
-    static ResponseStatusException noEncontrado() {
-        return new ResponseStatusException(HttpStatus.NOT_FOUND);
+    static OperacionRechazada noEncontrado() {
+        return OperacionRechazada.noEncontrado();
     }
 
-    static ResponseStatusException invalido(String mensaje) {
-        return new ResponseStatusException(HttpStatus.BAD_REQUEST, mensaje);
+    static OperacionRechazada invalido(String mensaje) {
+        return OperacionRechazada.datosInvalidos(mensaje);
     }
-
-    public record Apiario(long id, String nombre, long propietarioId, boolean archivado) {}
 }
