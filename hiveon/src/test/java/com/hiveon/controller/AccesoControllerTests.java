@@ -48,7 +48,12 @@ class AccesoControllerTests {
     void muestraBienvenidaYFormularioConCsrf() throws Exception {
         mvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("/img/hiveon-logo.png")));
+                .andExpect(content().string(containsString("/img/hiveon-marca.webp")))
+                .andExpect(content().string(containsString("/img/apiario-hiveon.webp")))
+                .andExpect(content().string(containsString("href=\"/ingresar\"")))
+                .andExpect(content().string(containsString("id=\"problema\"")))
+                .andExpect(content().string(containsString("https://www.fao.org/pollination/es")))
+                .andExpect(content().string(containsString("https://www.ica.gov.co/")));
         mvc.perform(get("/ingresar"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("name=\"_csrf\"")));

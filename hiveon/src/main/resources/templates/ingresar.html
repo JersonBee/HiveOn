@@ -4,29 +4,41 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Iniciar sesión · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-marca.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/editorial.css}">
 </head>
-<body class="pagina-publica">
-    <main class="acceso">
-        <a class="marca" th:href="@{/}" aria-label="Volver a la bienvenida de HiveOn">
-            <span class="simbolo-marca"><img class="logo logo-pequeno" th:src="@{/img/hiveon-logo.png}" alt=""></span>
-            <span>HiveOn</span>
-        </a>
-        <h1>Iniciar sesión</h1>
-        <p class="aviso aviso-error" th:if="${param.error}" role="alert">
-            No se pudo iniciar sesión. Revisa tus credenciales e inténtalo de nuevo.
-        </p>
-        <p class="aviso aviso-exito" th:if="${param.salida}" role="status">
-            Cerraste sesión.
-        </p>
-        <form class="formulario" th:action="@{/ingresar}" method="post">
-            <label for="correo">Correo electrónico</label>
-            <input id="correo" name="username" type="email" autocomplete="username" required>
-            <label for="contrasena">Contraseña</label>
-            <input id="contrasena" name="password" type="password"
-                   autocomplete="current-password" required>
-            <button class="boton" type="submit">Ingresar</button>
-        </form>
+<body class="sitio-publico pagina-acceso">
+    <header class="cabecera-publica">
+        <div class="ancho-publico cabecera-contenido">
+            <a class="marca marca-editorial" th:href="@{/}" aria-label="Volver a la bienvenida de HiveOn">
+                <span class="simbolo-marca"><img class="logo logo-barra" th:src="@{/img/hiveon-marca.webp}" alt=""></span>
+                <span>HiveOn</span>
+            </a>
+            <a class="enlace-regresar" th:href="@{/}"><span aria-hidden="true">←</span> Volver al inicio</a>
+        </div>
+    </header>
+    <main class="ancho-publico acceso-distribucion">
+        <figure class="acceso-foto">
+            <img th:src="@{/img/apiario-hiveon.webp}" width="1440" height="1080" alt="">
+            <figcaption>Del apiario al lote</figcaption>
+        </figure>
+        <section class="acceso" aria-labelledby="titulo-acceso">
+            <h1 id="titulo-acceso">Iniciar sesión</h1>
+            <p>Accede con el correo y la contraseña de tu cuenta HiveOn.</p>
+            <p class="aviso aviso-error" th:if="${param.error}" role="alert">
+                No se pudo iniciar sesión. Revisa tus credenciales e inténtalo de nuevo.
+            </p>
+            <p class="aviso aviso-exito" th:if="${param.salida}" role="status">Cerraste sesión.</p>
+            <form class="formulario" th:action="@{/ingresar}" method="post">
+                <label for="correo">Correo electrónico</label>
+                <input id="correo" name="username" type="email" autocomplete="username" required>
+                <label for="contrasena">Contraseña</label>
+                <input id="contrasena" name="password" type="password" autocomplete="current-password" required>
+                <button class="boton boton-bosque" type="submit">Ingresar <span aria-hidden="true">↗</span></button>
+            </form>
+            <p class="acceso-ayuda">El acceso se habilita a través de un administrador.</p>
+        </section>
     </main>
 </body>
 </html>

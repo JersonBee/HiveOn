@@ -94,6 +94,13 @@ class Sprint2IntegracionTests {
         mvc.perform(post(ruta + "/tareas/" + tarea + "/estado").with(user(operario.correo()).roles("OPERARIO"))
                         .with(csrf()).param("estado", "COMPLETADA"))
                 .andExpect(status().is3xxRedirection());
+        mvc.perform(post(ruta + "/tareas/" + tarea + "/estado").with(user(operario.correo()).roles("OPERARIO"))
+                        .with(csrf()).param("estado", "EN_CURSO"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Una tarea completada no se puede reabrir.")));
+        mvc.perform(get(ruta + "/gestion").with(user(operario.correo()).roles("OPERARIO")))
+                .andExpect(content().string(containsString("COMPLETADA")))
+                .andExpect(content().string(not(containsString("/tareas/" + tarea + "/estado"))));
         mvc.perform(post(rutaColmena + "/tratamientos").with(user(tecnico.correo()).roles("TECNICO"))
                         .with(csrf()).param("fecha", hoy).param("descripcion", "Observación sanitaria de prueba"))
                 .andExpect(status().is3xxRedirection());

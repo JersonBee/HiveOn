@@ -27,8 +27,9 @@ cargan los seis roles y los catálogos geográficos.
 - Las cosechas se registran en kilogramos. Un lote puede contener varias cosechas
   del mismo apiario y cada cosecha completa se asigna a un solo lote. Las fechas
   de cosecha se consultan desde las cosechas vinculadas.
-- Los estados iniciales de tareas son pendiente, en curso y completada. La
-  aplicación debe validar las transiciones acordadas al implementar esa historia.
+- Una tarea se crea como pendiente. El operario puede completarla desde
+  pendiente o en curso. Completada es un estado final y la aplicación impide
+  reabrir la tarea.
 
 PostgreSQL valida los códigos geográficos, los roles y vínculos necesarios
 para registrar operaciones, la vigencia de las asignaciones de tareas, la

@@ -85,13 +85,13 @@
                     <div th:text="|${tarea.operario} · Vence ${tarea.vencimiento}|"></div>
                     <div th:text="${#strings.replace(tarea.estado, '_', ' ')}"></div>
                     <div th:if="${tarea.retirada}">Vínculo retirado</div>
-                    <form class="formulario" th:if="${acceso.operario() and !acceso.archivado}"
+                    <form class="formulario" th:if="${acceso.operario() and !acceso.archivado and tarea.estado != 'COMPLETADA'}"
                           th:action="@{/apiarios/{id}/tareas/{t}/estado(id=${apiarioId},t=${tarea.id})}" method="post">
                         <label th:for="|estado-${tarea.id}|">Estado</label>
                         <select th:id="|estado-${tarea.id}|" name="estado">
                             <option value="PENDIENTE" th:selected="${tarea.estado == 'PENDIENTE'}">Pendiente</option>
                             <option value="EN_CURSO" th:selected="${tarea.estado == 'EN_CURSO'}">En curso</option>
-                            <option value="COMPLETADA" th:selected="${tarea.estado == 'COMPLETADA'}">Completada</option>
+                            <option value="COMPLETADA">Completada</option>
                         </select>
                         <button class="boton boton-secundario" type="submit">Guardar estado</button>
                     </form>

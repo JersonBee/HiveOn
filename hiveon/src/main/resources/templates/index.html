@@ -3,19 +3,107 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>HiveOn · Gestión de apiarios</title>
+    <meta name="description" content="HiveOn organiza los apiarios, el seguimiento sanitario y la trazabilidad de la miel en un solo lugar.">
+    <title>HiveOn · Del apiario al lote</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-marca.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/editorial.css}">
 </head>
-<body class="pagina-publica">
-    <main class="portada">
-        <div class="portada-contenido">
-            <h1>Tus apiarios, en un solo lugar</h1>
-            <p>Organiza el registro y el seguimiento de tus apiarios y colmenas.</p>
-            <a class="boton" th:href="@{/ingresar}">Iniciar sesión</a>
+<body class="sitio-publico">
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+    <header class="cabecera-publica">
+        <div class="ancho-publico cabecera-contenido">
+            <a class="marca marca-editorial" th:href="@{/}" aria-label="HiveOn, inicio">
+                <span class="simbolo-marca"><img class="logo logo-barra" th:src="@{/img/hiveon-marca.webp}" alt=""></span>
+                <span>HiveOn</span>
+            </a>
+            <nav class="enlaces-publicos" aria-label="Explorar HiveOn">
+                <a href="#problema">El problema</a>
+                <a href="#flujo">Cómo funciona</a>
+                <a href="#fuentes">Fuentes</a>
+            </nav>
+            <a class="boton boton-bosque" th:href="@{/ingresar}">Iniciar sesión <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="portada-marca">
-            <img class="logo" th:src="@{/img/hiveon-logo.png}" alt="HiveOn">
-        </div>
+    </header>
+
+    <main id="contenido" tabindex="-1">
+        <section class="ancho-publico portada-editorial" aria-labelledby="titulo-portada">
+            <div class="portada-texto">
+                <p class="sobrelinea">Gestión apícola</p>
+                <h1 id="titulo-portada">Cuida tus colmenas.<br><em>Conoce el origen.</em></h1>
+                <p class="portada-entrada">Registra lo que ocurre en cada apiario y conecta el trabajo de campo con la historia de cada lote de miel.</p>
+                <a class="boton" href="#flujo">Descubrir cómo funciona <span aria-hidden="true">↓</span></a>
+            </div>
+            <figure class="portada-foto">
+                <img th:src="@{/img/apiario-hiveon.webp}" width="1440" height="1080" fetchpriority="high"
+                     alt="Colmenas de madera en una ladera verde al amanecer">
+                <figcaption>Imagen ilustrativa</figcaption>
+            </figure>
+        </section>
+
+        <section class="problema" id="problema" aria-labelledby="titulo-problema">
+            <div class="ancho-publico problema-contenido">
+                <div>
+                    <p class="sobrelinea">El problema</p>
+                    <h2 id="titulo-problema">Lo que pasa en el apiario debe poder reconstruirse.</h2>
+                </div>
+                <div class="problema-detalle">
+                    <p>Cuando las inspecciones, los tratamientos y las cosechas quedan dispersos, cuesta saber qué se hizo, quién lo registró y de qué apiario salió un lote.</p>
+                    <p>HiveOn organiza esa información alrededor del apiario. El equipo puede consultar el historial, dar seguimiento a las tareas y conservar el vínculo entre cada cosecha y su origen.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="ancho-publico flujo" id="flujo" aria-labelledby="titulo-flujo">
+            <h2 id="titulo-flujo">Del apiario al lote</h2>
+            <div class="flujo-tarjetas">
+                <article class="flujo-tarjeta">
+                    <span class="flujo-icono" aria-hidden="true">⌖</span>
+                    <h3>Organiza el apiario</h3>
+                    <p>Identifica las colmenas, vincula a tu equipo y asigna las tareas de campo.</p>
+                </article>
+                <article class="flujo-tarjeta">
+                    <span class="flujo-icono" aria-hidden="true">+</span>
+                    <h3>Registra el seguimiento</h3>
+                    <p>Consulta inspecciones, tratamientos y recomendaciones con su autor y fecha.</p>
+                </article>
+                <article class="flujo-tarjeta">
+                    <span class="flujo-icono" aria-hidden="true">↗</span>
+                    <h3>Publica lotes trazables</h3>
+                    <p>Asocia las cosechas a un lote para que el comprador pueda consultar su origen y las fechas de recolección.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="fuentes" id="fuentes" aria-labelledby="titulo-fuentes">
+            <div class="ancho-publico fuentes-contenido">
+                <div>
+                    <p class="sobrelinea">Referencias</p>
+                    <h2 id="titulo-fuentes">Por qué importa el registro apícola</h2>
+                    <p>La polinización y la sanidad de las colmenas dan contexto al trabajo que HiveOn ayuda a documentar.</p>
+                </div>
+                <div class="fuentes-citas">
+                    <figure>
+                        <blockquote>«Los servicios de polinización son fundamentales para la producción de alimentos».</blockquote>
+                        <figcaption><a href="https://www.fao.org/pollination/es">FAO · Acción mundial sobre la polinización <span aria-hidden="true">↗</span></a></figcaption>
+                    </figure>
+                    <figure>
+                        <blockquote>«la protección sanitaria de la especie Apis mellifera»</blockquote>
+                        <figcaption><a href="https://www.ica.gov.co/areas/pecuaria/servicios/enfermedades-animales/programa-apicola">ICA · Programa Sanitario Apícola <span aria-hidden="true">↗</span></a></figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <footer class="pie-publico">
+        <div class="ancho-publico pie-contenido">
+            <div>
+                <strong>HiveOn</strong>
+                <p>Proyecto académico · Unidades Tecnológicas de Santander</p>
+            </div>
+            <a href="https://github.com/JersonBee/HiveOn#readme">Ver el proyecto en GitHub <span aria-hidden="true">↗</span></a>
+        </div>
+    </footer>
 </body>
 </html>

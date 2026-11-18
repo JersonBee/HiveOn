@@ -78,6 +78,20 @@ simuladas, ejecuta `.\mvnw.cmd '-Dtest=controller.*Tests,config.*Tests' test`.
 La revisión visual en navegadores y las mediciones de tiempos de respuesta
 se realizan aparte.
 
+### Verificación de cierre
+
+El 18 de noviembre de 2026 pasaron las 28 pruebas con PostgreSQL 16. La
+regresión del Sprint 2 comprueba que el operario puede completar una tarea
+directamente desde Pendiente y que los intentos de reabrirla se rechazan.
+
+En Edge con una base local ficticia se verificaron los recorridos principales
+de los seis roles. Los 17 flujos medidos, desde la navegación o el envío del
+formulario hasta `DOMContentLoaded`, tardaron entre 142 y 4.981 ms. La
+medición corresponde a una ejecución local. En Vercel se comprobó el acceso de
+Administrador y se midieron tres cargas de Administración y tres de
+Auditoría a 390 px, entre 215 y 1.063 ms. Queda pendiente medir en Vercel los
+flujos autenticados de los otros cinco roles.
+
 ## Sprint 1
 
 | Historia | Trabajo |

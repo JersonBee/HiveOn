@@ -6,6 +6,14 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: "Instrument Serif";
+    src: url("../fonts/instrument-serif.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
 :root {
     color-scheme: light;
     font-family: Nunito, system-ui, sans-serif;
@@ -13,71 +21,36 @@
     background: #fcf8ef;
     --cacao: #403128;
     --cacao-suave: #665349;
-    --miel: #f8d783;
+    --miel: #f3d591;
     --miel-oscura: #cf9e40;
     --salvia: #dcebd8;
-    --bosque: #304d38;
-    --crema: #fcf8ef;
+    --bosque: #203e32;
+    --crema: #faf7ef;
     --blanco: #fff;
     --borde: #e7ddcd;
-    --sombra: 0 14px 36px -24px #5e432b65;
+    --sombra: 0 16px 40px -32px #2a3e2f60;
+    --titulos: "Instrument Serif", Georgia, serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 body {
     min-height: 100svh;
     margin: 0;
-    background: radial-gradient(ellipse at 95% 0%, #e3eedb 0%, transparent 29rem),
-                radial-gradient(ellipse at 4% 10%, #fae9bd 0%, transparent 25rem),
-                var(--crema);
-}
-
-.pagina-publica {
-    display: grid;
-    min-height: 100svh;
-    place-items: center;
-    padding: clamp(1rem, 5vw, 3.5rem);
-}
-
-.portada {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    align-items: center;
-    gap: clamp(1.5rem, 6vw, 4.5rem);
-    width: min(100%, 65rem);
-    padding: clamp(1.3rem, 5vw, 3.75rem);
-    border: 1px solid var(--borde);
-    border-radius: 2rem;
-    background: #fffdf9;
-    box-shadow: var(--sombra);
+    background: var(--crema);
 }
 
 .logo { display: block; width: 100%; max-width: 16rem; height: auto; }
-.logo-pequeno { width: 3.4rem; }
 .logo-barra { width: 2.85rem; }
 .marca { display: inline-block; }
 .simbolo-marca { height: 2.15rem; overflow: hidden; flex: none; }
-.acceso .simbolo-marca { height: 2.55rem; }
-.portada-contenido h1 { font-size: clamp(2.4rem, 6vw, 4.6rem); }
-.portada-contenido p { max-width: 32ch; color: var(--cacao-suave); font-size: 1.15rem; }
-.portada-marca {
-    display: grid;
-    min-height: clamp(12rem, 32vw, 24rem);
-    place-items: center;
-    padding: 1.25rem;
-    border: 1px solid #e2d69e;
-    border-radius: 1.45rem;
-    background:
-        radial-gradient(circle, #b48a39a0 1px, transparent 1.6px) 0 0 / 20px 20px,
-        linear-gradient(145deg, #f6df9d, #f9edc3 55%, #dce9cf);
-}
-.portada-marca .logo { border-radius: 1.35rem; box-shadow: 0 15px 45px -21px #5a442b80; }
 
 h1 {
     margin: 0;
-    font-size: clamp(2rem, 5.4vw, 3.1rem);
+    color: var(--bosque);
+    font-family: var(--titulos);
+    font-size: clamp(2.7rem, 6vw, 4.2rem);
     line-height: 1.1;
-    font-weight: 800;
+    font-weight: 400;
     text-wrap: balance;
     letter-spacing: -0.045em;
 }
@@ -116,18 +89,16 @@ p { margin: 0.85rem 0 1.4rem; line-height: 1.55; }
     box-shadow: var(--sombra);
 }
 
-.barra .marca, .acceso .marca {
+.barra .marca, .marca-editorial {
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
-    color: var(--cacao);
+    color: var(--bosque);
     font-size: 1.25rem;
     font-weight: 800;
     text-decoration: none;
     letter-spacing: -0.035em;
 }
-.acceso .marca { display: flex; width: fit-content; margin: 0 auto 1.15rem; }
-.acceso h1 { font-size: 2rem; text-align: center; }
 .formulario { display: grid; gap: 0.45rem; margin-top: 1.4rem; }
 .formulario label { font-weight: 800; }
 .formulario input:not([type="hidden"], [type="checkbox"], [type="radio"]), .formulario select, .formulario textarea {
@@ -156,7 +127,7 @@ p { margin: 0.85rem 0 1.4rem; line-height: 1.55; }
     gap: 0.75rem;
     padding: 0.65rem clamp(1rem, 5vw, 3.5rem);
     border-bottom: 1px solid var(--borde);
-    background: #fffdf9;
+    background: #fffcf5;
 }
 
 .area { width: min(100% - 2rem, 70rem); margin: clamp(1.5rem, 5vw, 3.5rem) auto; }
@@ -171,25 +142,21 @@ p { margin: 0.85rem 0 1.4rem; line-height: 1.55; }
 .area > h1, .area > .encabezado-modulo {
     margin-bottom: 1.5rem;
     padding: clamp(1.1rem, 3vw, 2.15rem);
-    border: 1px solid #ece0c2;
-    border-radius: 1.45rem;
-    background: linear-gradient(112deg, #fff1ca, #f9eedb 60%, #edf3e8);
+    border: 1px solid #dfddce;
+    border-radius: 1rem;
+    background: #efeee2;
 }
 .bienvenida {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: clamp(9rem, 19vw, 15rem);
+    min-height: clamp(9rem, 19vw, 14rem);
     gap: 1rem;
     padding: clamp(1.25rem, 5vw, 3rem);
-    border: 1px solid #e9d8a7;
-    border-radius: 1.7rem;
-    background:
-        radial-gradient(circle, #a787424a 1px, transparent 1.6px) 0 0 / 22px 22px,
-        linear-gradient(113deg, #ffe9ae, #fff3d3 57%, #e1edd9);
+    border-radius: 1.1rem;
+    background: linear-gradient(90deg, #17382ef5, #17382e86), url("../img/apiario-hiveon.webp") 65% 56% / cover;
 }
-.bienvenida h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); }
-.bienvenida .logo { width: clamp(4.3rem, 18vw, 9rem); border-radius: 1.2rem; }
+.bienvenida h1 { color: #fff7e6; font-size: clamp(3.5rem, 8vw, 5.5rem); }
 .accesos-inicio {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
@@ -198,7 +165,7 @@ p { margin: 0.85rem 0 1.4rem; line-height: 1.55; }
 }
 .acceso-modulo {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 0.35rem 0.9rem;
     align-items: start;
     color: var(--cacao);
@@ -262,20 +229,13 @@ p { margin: 0.85rem 0 1.4rem; line-height: 1.55; }
     background: var(--miel-oscura);
     content: "";
 }
-.panel-administracion { display: grid; gap: 1rem; }
+.panel-administracion { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
 .panel-administracion h2 { margin-bottom: 0; }
 .panel-administracion .cuentas { align-self: start; margin: 0; }
 .panel-administracion .area-formulario { align-self: start; margin: 0; background: #fffdf8; }
 .acciones-modulo { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-block: 1rem; }
 .formulario h2, .formulario h3 { margin: 0 0 0.5rem; }
 .texto-registro { white-space: pre-wrap; overflow-wrap: anywhere; margin-bottom: 0; }
-
-@media (max-width: 36rem) {
-    .portada { grid-template-columns: 1fr; justify-items: center; text-align: center; }
-    .portada-marca { grid-row: 1; width: 100%; min-height: 10rem; }
-    .portada .logo { max-width: 8.5rem; }
-    .portada-contenido p { margin-inline: auto; }
-}
 
 @media (min-width: 46rem) {
     .panel-administracion {

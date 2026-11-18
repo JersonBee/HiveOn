@@ -257,15 +257,22 @@ public void asignarTarea(long apiarioId, Principal usuario, long vinculo, String
         if (!ESTADOS_TAREA.contains(estado)) {
             throw new IllegalArgumentException("Selecciona un estado válido.");
         }
-        if (consulta("""
-                update hiveon.tareas t set estado=:estado
-                from hiveon.vinculaciones_apiario v
-                where t.apiario_id=:apiario and t.id=:tarea and t.vinculacion_id=v.id
+        String actual = consulta("""
+                select t.estado from hiveon.tareas t
+                join hiveon.vinculaciones_apiario v on t.vinculacion_id=v.id
+                where t.apiario_id=:apiario and t.id=:tarea
                   and v.usuario_id=:usuario and v.retirada_en is null
-                """, apiarioId).param("estado", estado).param("tarea", tareaId)
-                .param("usuario", acceso.usuarioId()).update() != 1) {
-            throw OperacionRechazada.noEncontrado();
+                for update of t
+                """, apiarioId).param("tarea", tareaId).param("usuario", acceso.usuarioId())
+                .query(String.class).optional().orElseThrow(OperacionRechazada::noEncontrado);
+        if (actual.equals(estado)) {
+            return;
         }
+        if ("COMPLETADA".equals(actual)) {
+            throw new IllegalArgumentException("Una tarea completada no se puede reabrir.");
+        }
+        consulta("update hiveon.tareas set estado=:estado where apiario_id=:apiario and id=:tarea", apiarioId)
+                .param("estado", estado).param("tarea", tareaId).update();
     }
 
     @Transactional
