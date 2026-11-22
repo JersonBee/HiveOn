@@ -4,11 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Editar apiario · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='apiarios'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area area-formulario">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area area-formulario vista-editar">
         <a class="volver" th:href="@{/apiarios/{id}/gestion(id=${apiarioId})}">Volver a la gestión</a>
         <h1>Editar apiario</h1>
         <form class="tarjeta formulario" th:action="@{/apiarios/{id}/editar(id=${apiarioId})}" method="get">
@@ -33,6 +36,7 @@
             <input id="vereda" name="vereda" th:value="${datos.vereda}">
             <button class="boton" type="submit">Guardar cambios</button>
         </form>
+<aside class="nota-formulario"><img src="/img/cuidado-colmena.webp" width="1440" height="1080" alt=""><h2>La misma historia, al día</h2><p>Actualiza los datos del apiario. Las inspecciones y los registros anteriores conservan su historial.</p><small>Imagen ilustrativa generada con IA.</small></aside>
     </main>
 </body>
 </html>

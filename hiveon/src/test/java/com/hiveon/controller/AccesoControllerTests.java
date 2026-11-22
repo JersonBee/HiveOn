@@ -48,7 +48,7 @@ class AccesoControllerTests {
     void muestraBienvenidaYFormularioConCsrf() throws Exception {
         mvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("/img/hiveon-marca.webp")))
+                .andExpect(content().string(containsString("/img/hiveon-simbolo.webp")))
                 .andExpect(content().string(containsString("/img/apiario-hiveon.webp")))
                 .andExpect(content().string(containsString("href=\"/ingresar\"")))
                 .andExpect(content().string(containsString("id=\"problema\"")))

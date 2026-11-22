@@ -4,28 +4,39 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Administración · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='administracion'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area vista-administracion">
         <div class="encabezado-modulo">
-            <h1>Administración</h1>
+            <div>
+                <h1>Administración</h1>
+                <p class="descripcion-vista">Cuentas y catálogos de HiveOn.</p>
+            </div>
             <a class="boton boton-secundario" th:href="@{/administracion/auditoria}">Consultar auditoría</a>
         </div>
         <section class="seccion-modulo panel-administracion">
-            <h2>Usuarios</h2>
-            <ul class="registros cuentas">
-                <li class="tarjeta registro" th:each="u : ${cuentas}">
-                    <div>
-                        <a class="enlace-registro" th:href="@{/administracion/usuarios/{id}(id=${u.id})}"
-                           th:text="${u.nombre}"></a>
-                        <div th:text="|${u.correo} · ${u.rol_codigo}|"></div>
-                    </div>
-                    <span class="estado" th:classappend="${!u.habilitado ? 'estado-inactivo' : ''}"
-                          th:text="${u.habilitado ? 'Habilitada' : 'Inhabilitada'}"></span>
-                </li>
-            </ul>
+            <div class="tarjeta directorio">
+                <h2>Usuarios</h2>
+                <table class="tabla-cuentas">
+                    <thead><tr><th scope="col">Nombre y correo</th><th scope="col">Rol</th><th scope="col">Estado</th></tr></thead>
+                    <tbody>
+                        <tr th:each="u : ${cuentas}">
+                            <td>
+                                <a class="enlace-registro" th:href="@{/administracion/usuarios/{id}(id=${u.id})}" th:text="${u.nombre}"></a>
+                                <span class="correo-cuenta" th:text="${u.correo}"></span>
+                            </td>
+                            <td th:text="${#strings.capitalize(#strings.toLowerCase(u.rol_codigo))}"></td>
+                            <td><span class="estado" th:classappend="${!u.habilitado ? 'estado-inactivo' : ''}"
+                                      th:text="${u.habilitado ? 'Habilitada' : 'Inhabilitada'}"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <form class="tarjeta formulario area-formulario" method="post" th:action="@{/administracion/usuarios}">
                 <h3>Crear cuenta</h3>
                 <label for="nombre">Nombre</label><input id="nombre" name="nombre" maxlength="160" required>
@@ -40,9 +51,9 @@
                 <button class="boton" type="submit">Crear cuenta</button>
             </form>
         </section>
-        <section class="seccion-modulo">
+        <section class="seccion-modulo catalogos">
             <h2>Catálogo de tipos de colmena</h2>
-            <p th:if="${tipos.isEmpty()}">Aún no hay tipos registrados.</p>
+            <p class="estado-vacio" th:if="${tipos.isEmpty()}">Aún no hay tipos registrados.</p>
             <ul class="registros">
                 <li class="tarjeta" th:each="t : ${tipos}">
                     <form class="formulario" method="post" th:action="@{/administracion/tipos-colmena/{id}(id=${t.id})}">

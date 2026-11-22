@@ -4,11 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Registrar apiario · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='apiarios'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area area-formulario">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area area-formulario vista-nuevo">
         <a class="volver" th:href="@{/apiarios}">Volver a Mis apiarios</a>
         <h1>Registrar apiario</h1>
         <form class="tarjeta formulario" th:action="@{/apiarios/nuevo}" method="get">
@@ -47,6 +50,7 @@
             <input id="vereda" th:field="*{vereda}" type="text">
             <button class="boton" type="submit">Guardar apiario</button>
         </form>
+<aside class="nota-formulario"><img src="/img/cuidado-colmena.webp" width="1440" height="1080" alt=""><h2>El comienzo de un apiario</h2><p>Elige el departamento y el municipio, y registra un nombre que te ayude a reconocerlo.</p><small>Imagen ilustrativa generada con IA.</small></aside>
     </main>
 </body>
 </html>

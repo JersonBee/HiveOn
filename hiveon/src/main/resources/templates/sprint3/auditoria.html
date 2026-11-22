@@ -4,14 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Auditoría · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='auditoria'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area vista-auditoria">
         <a class="volver" th:href="@{/administracion}">Volver a Administración</a>
         <h1>Auditoría</h1>
-        <p th:if="${eventos.isEmpty()}">No hay eventos en esta página.</p>
+        <p class="estado-vacio" th:if="${eventos.isEmpty()}">No hay eventos en esta página.</p>
         <ul class="registros">
             <li class="tarjeta" th:each="e : ${eventos}">
                 <strong th:text="${#strings.replace(e.accion, '_', ' ')}"></strong>

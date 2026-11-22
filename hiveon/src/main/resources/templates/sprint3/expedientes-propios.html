@@ -4,15 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Revisión sanitaria · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='apiarios'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area vista-expedientes-propios">
         <a class="volver" th:href="@{/apiarios/{id}/gestion(id=${apiario.id})}">Volver a la gestión</a>
         <h1>Revisión sanitaria</h1>
         <p th:text="${apiario.nombre}"></p>
-        <p th:if="${expedientes.isEmpty()}">Aún no hay expedientes remitidos.</p>
+        <p class="estado-vacio" th:if="${expedientes.isEmpty()}">Aún no hay expedientes remitidos.</p>
         <ul class="registros">
             <li class="tarjeta" th:each="e : ${expedientes}">
                 <strong th:text="|${e.fecha} · ${e.decision ?: 'Pendiente'}|"></strong>

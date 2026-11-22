@@ -4,14 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Expedientes remitidos · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='expedientes'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area vista-expedientes">
         <h1>Expedientes remitidos</h1>
+<section class="panorama-apiarios" aria-label="Resumen de la consulta"><div><svg th:replace="~{fragmentos :: icono('registro')}"></svg><p><strong th:text="${expedientes.size()}">0</strong><span>Expedientes disponibles</span></p></div><p>Cada revisión parte<br>de una historia sanitaria.</p><img src="/img/cuidado-colmena.webp" width="1440" height="1080" alt=""></section>
         <p>Revisión interna del inspector sanitario simulado.</p>
-        <p th:if="${expedientes.isEmpty()}">Aún no hay expedientes disponibles.</p>
+        <p class="estado-vacio" th:if="${expedientes.isEmpty()}">Aún no hay expedientes disponibles.</p>
         <ul class="registros">
             <li class="tarjeta registro" th:each="e : ${expedientes}">
                 <a class="enlace-registro" th:href="@{/expedientes/{id}(id=${e.id})}" th:text="|${e.apiario} · ${e.fecha}|"></a>

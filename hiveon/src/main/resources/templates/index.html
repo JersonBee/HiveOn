@@ -3,9 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="HiveOn organiza los apiarios, el seguimiento sanitario y la trazabilidad de la miel en un solo lugar.">
-    <title>HiveOn · Del apiario al lote</title>
-    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-marca.webp}">
+    <meta name="description" content="HiveOn reúne la gestión de apiarios, el seguimiento de colmenas y la trazabilidad de la miel.">
+    <title>HiveOn · La historia de tu apiario</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
+    <link rel="preload" as="font" type="font/ttf" crossorigin th:href="@{/fonts/bricolage-grotesque.ttf}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
     <link rel="stylesheet" th:href="@{/css/editorial.css}">
 </head>
@@ -13,79 +14,69 @@
     <a class="saltar" href="#contenido">Saltar al contenido</a>
     <header class="cabecera-publica">
         <div class="ancho-publico cabecera-contenido">
-            <a class="marca marca-editorial" th:href="@{/}" aria-label="HiveOn, inicio">
-                <span class="simbolo-marca"><img class="logo logo-barra" th:src="@{/img/hiveon-marca.webp}" alt=""></span>
+            <a class="marca" th:href="@{/}" aria-label="HiveOn, inicio">
+                <img class="logo-barra" th:src="@{/img/hiveon-simbolo.webp}" alt="" width="44" height="44">
                 <span>HiveOn</span>
             </a>
             <nav class="enlaces-publicos" aria-label="Explorar HiveOn">
-                <a href="#problema">El problema</a>
+                <a href="#problema">El proyecto</a>
                 <a href="#flujo">Cómo funciona</a>
                 <a href="#fuentes">Fuentes</a>
             </nav>
-            <a class="boton boton-bosque" th:href="@{/ingresar}">Iniciar sesión <span aria-hidden="true">↗</span></a>
+            <a class="boton" th:href="@{/ingresar}">Iniciar sesión <span aria-hidden="true">↗</span></a>
         </div>
     </header>
-
     <main id="contenido" tabindex="-1">
         <section class="ancho-publico portada-editorial" aria-labelledby="titulo-portada">
             <div class="portada-texto">
-                <p class="sobrelinea">Gestión apícola</p>
-                <h1 id="titulo-portada">Cuida tus colmenas.<br><em>Conoce el origen.</em></h1>
-                <p class="portada-entrada">Registra lo que ocurre en cada apiario y conecta el trabajo de campo con la historia de cada lote de miel.</p>
-                <a class="boton" href="#flujo">Descubrir cómo funciona <span aria-hidden="true">↓</span></a>
+                <h1 id="titulo-portada">HiveOn</h1>
+                <p class="promesa">La historia de tu apiario, <br>bien cuidada.</p>
+                <p class="portada-entrada">Organiza las colmenas, el trabajo de campo y el origen de cada lote de miel.</p>
+                <a class="boton" href="#flujo">Conocer HiveOn <span aria-hidden="true">↓</span></a>
+                <img class="abeja-portada" th:src="@{/img/hiveon-simbolo.webp}" alt="" width="72" height="72">
             </div>
             <figure class="portada-foto">
                 <img th:src="@{/img/apiario-hiveon.webp}" width="1440" height="1080" fetchpriority="high"
-                     alt="Colmenas de madera en una ladera verde al amanecer">
-                <figcaption>Imagen ilustrativa</figcaption>
+                     alt="Colmenas de madera en las laderas verdes de un apiario al amanecer">
+                <figcaption>Imagen ilustrativa generada con IA</figcaption>
             </figure>
         </section>
-
         <section class="problema" id="problema" aria-labelledby="titulo-problema">
-            <div class="ancho-publico problema-contenido">
-                <div>
-                    <p class="sobrelinea">El problema</p>
-                    <h2 id="titulo-problema">Lo que pasa en el apiario debe poder reconstruirse.</h2>
-                </div>
+            <div class="ancho-publico problema-contenido revelar">
+                <h2 id="titulo-problema">Cada registro<br>cuenta</h2>
                 <div class="problema-detalle">
-                    <p>Cuando las inspecciones, los tratamientos y las cosechas quedan dispersos, cuesta saber qué se hizo, quién lo registró y de qué apiario salió un lote.</p>
-                    <p>HiveOn organiza esa información alrededor del apiario. El equipo puede consultar el historial, dar seguimiento a las tareas y conservar el vínculo entre cada cosecha y su origen.</p>
+                    <p>Las inspecciones, los tratamientos y las cosechas forman la historia del apiario. HiveOn la reúne para que puedas consultarla y dar seguimiento al trabajo de tu equipo.</p>
+                    <p>La autoría y las fechas de los registros ayudan a reconstruir qué se hizo y de dónde procede cada lote.</p>
                 </div>
             </div>
         </section>
-
-        <section class="ancho-publico flujo" id="flujo" aria-labelledby="titulo-flujo">
-            <h2 id="titulo-flujo">Del apiario al lote</h2>
-            <div class="flujo-tarjetas">
-                <article class="flujo-tarjeta">
-                    <span class="flujo-icono" aria-hidden="true">⌖</span>
-                    <h3>Organiza el apiario</h3>
-                    <p>Identifica las colmenas, vincula a tu equipo y asigna las tareas de campo.</p>
+        <section class="ancho-publico flujo revelar" id="flujo" aria-labelledby="titulo-flujo">
+            <h2 id="titulo-flujo">Del cuidado de la colmena<br>al origen de la miel</h2>
+            <div class="flujo-filas">
+                <article class="flujo-fila">
+                    <h3>Organiza tus apiarios</h3>
+                    <p>Identifica tus colmenas y su ubicación. Vincula a los operarios y técnicos que colaboran en cada apiario.</p>
                 </article>
-                <article class="flujo-tarjeta">
-                    <span class="flujo-icono" aria-hidden="true">+</span>
-                    <h3>Registra el seguimiento</h3>
-                    <p>Consulta inspecciones, tratamientos y recomendaciones con su autor y fecha.</p>
+                <article class="flujo-fila">
+                    <h3>Acompaña el trabajo de campo</h3>
+                    <p>Asigna tareas y consulta las inspecciones, los tratamientos y las recomendaciones con su autor y fecha.</p>
                 </article>
-                <article class="flujo-tarjeta">
-                    <span class="flujo-icono" aria-hidden="true">↗</span>
-                    <h3>Publica lotes trazables</h3>
-                    <p>Asocia las cosechas a un lote para que el comprador pueda consultar su origen y las fechas de recolección.</p>
+                <article class="flujo-fila">
+                    <h3>Conserva la trazabilidad</h3>
+                    <p>Conecta las cosechas con un lote. Al publicarlo, el comprador puede consultar el origen registrado y las fechas de recolección.</p>
                 </article>
             </div>
         </section>
-
         <section class="fuentes" id="fuentes" aria-labelledby="titulo-fuentes">
-            <div class="ancho-publico fuentes-contenido">
-                <div>
-                    <p class="sobrelinea">Referencias</p>
-                    <h2 id="titulo-fuentes">Por qué importa el registro apícola</h2>
-                    <p>La polinización y la sanidad de las colmenas dan contexto al trabajo que HiveOn ayuda a documentar.</p>
+            <div class="ancho-publico fuentes-contenido revelar">
+                <div class="fuentes-intro">
+                    <h2 id="titulo-fuentes">El contexto<br>de nuestro proyecto</h2>
+                    <p>La polinización y el cuidado sanitario de las abejas dan sentido a la información que HiveOn ayuda a conservar.</p>
                 </div>
                 <div class="fuentes-citas">
                     <figure>
                         <blockquote>«Los servicios de polinización son fundamentales para la producción de alimentos».</blockquote>
-                        <figcaption><a href="https://www.fao.org/pollination/es">FAO · Acción mundial sobre la polinización <span aria-hidden="true">↗</span></a></figcaption>
+                        <figcaption><a href="https://www.fao.org/pollination/es">FAO · Polinización <span aria-hidden="true">↗</span></a></figcaption>
                     </figure>
                     <figure>
                         <blockquote>«la protección sanitaria de la especie Apis mellifera»</blockquote>
@@ -95,14 +86,14 @@
             </div>
         </section>
     </main>
-
     <footer class="pie-publico">
         <div class="ancho-publico pie-contenido">
-            <div>
-                <strong>HiveOn</strong>
-                <p>Proyecto académico · Unidades Tecnológicas de Santander</p>
-            </div>
-            <a href="https://github.com/JersonBee/HiveOn#readme">Ver el proyecto en GitHub <span aria-hidden="true">↗</span></a>
+            <a class="marca" th:href="@{/}" aria-label="HiveOn, inicio">
+                <img class="logo-barra" th:src="@{/img/hiveon-simbolo.webp}" alt="" width="44" height="44">
+                <span>HiveOn</span>
+            </a>
+            <p>Proyecto académico · Unidades Tecnológicas de Santander</p>
+            <a href="https://github.com/JersonBee/HiveOn#readme">GitHub <span aria-hidden="true">↗</span></a>
         </div>
     </footer>
 </body>

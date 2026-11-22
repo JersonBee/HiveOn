@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="hiveon/src/main/resources/static/img/hiveon-logo.png" width="160" alt="Logotipo de HiveOn con una abeja dentro de un hexágono">
+  <img src="hiveon/src/main/resources/static/img/hiveon-simbolo.webp" width="160" alt="Logotipo de HiveOn con una abeja sonriente dentro de un hexágono">
 </p>
 
 # HiveOn
@@ -7,6 +7,8 @@
 HiveOn es una aplicación web académica para gestionar apiarios, colmenas y la producción de miel. Permite conservar el historial sanitario, coordinar el trabajo de campo y consultar la trazabilidad de los lotes publicados.
 
 [Abrir HiveOn](https://hiveon-ochre.vercel.app/) · [Guía de ejecución y pruebas](hiveon/README.md) · [Modelo de datos y migraciones](hiveon/supabase/README.md)
+
+La [guía de identidad visual](hiveon/docs/identidad-visual.md) documenta la paleta, el nuevo símbolo, las tipografías y los criterios de navegación y movimiento accesible.
 
 ## 1. Problema y objetivo
 

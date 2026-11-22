@@ -4,11 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lote propio · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='apiarios'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area vista-lote">
         <a class="volver" th:href="@{/apiarios/{id}/produccion(id=${apiario.id})}">Volver a Producción y lotes</a>
         <h1 th:text="|Lote ${lote.codigo}|"></h1>
         <p th:text="${lote.publicado ? 'Publicado' : 'Borrador'}"></p>
@@ -24,7 +27,7 @@
             <input id="codigo" name="codigo" th:value="${lote.codigo}" maxlength="80" required>
             <fieldset>
                 <legend>Cosechas del mismo apiario</legend>
-                <p th:if="${cosechas.isEmpty()}">Aún no hay cosechas disponibles.</p>
+                <p class="estado-vacio" th:if="${cosechas.isEmpty()}">Aún no hay cosechas disponibles.</p>
                 <div th:each="c : ${cosechas}">
                     <input type="checkbox" name="cosechas" th:id="|cosecha-${c.id}|" th:value="${c.id}" th:checked="${c.incluida}">
                     <label th:for="|cosecha-${c.id}|" th:text="|${c.fecha} · ${c.cantidad_kg} kg|"></label>

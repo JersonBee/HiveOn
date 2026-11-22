@@ -4,17 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Producción y lotes · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='apiarios'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area vista-produccion">
         <a class="volver" th:href="@{/apiarios/{id}/gestion(id=${apiario.id})}">Volver a la gestión</a>
         <h1>Producción y lotes</h1>
         <p th:text="${apiario.nombre}"></p>
-        <section class="seccion-modulo">
+        <section class="seccion-modulo panel-operacion">
             <h2>Cosechas</h2>
-            <p th:if="${cosechas.isEmpty()}">Aún no hay cosechas registradas.</p>
+            <p class="estado-vacio" th:if="${cosechas.isEmpty()}">Aún no hay cosechas registradas.</p>
             <ul class="registros">
                 <li class="tarjeta registro" th:each="c : ${cosechas}">
                     <strong th:text="|${c.fecha} · ${c.cantidad_kg} kg|"></strong>
@@ -36,9 +39,9 @@
                 <button class="boton" type="submit">Registrar cosecha</button>
             </form>
         </section>
-        <section class="seccion-modulo">
+        <section class="seccion-modulo panel-operacion">
             <h2>Lotes propios</h2>
-            <p th:if="${lotes.isEmpty()}">Aún no hay lotes.</p>
+            <p class="estado-vacio" th:if="${lotes.isEmpty()}">Aún no hay lotes.</p>
             <ul class="registros">
                 <li class="tarjeta registro" th:each="l : ${lotes}">
                     <a class="enlace-registro" th:href="@{/apiarios/{id}/produccion/lotes/{lote}(id=${apiario.id},lote=${l.id})}"

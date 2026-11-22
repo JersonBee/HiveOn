@@ -4,13 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="|${apiario.nombre} · HiveOn|">Apiario · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='apiarios'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area area-formulario">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area area-formulario vista-detalle">
         <a class="volver" th:href="@{/apiarios}">Volver a Mis apiarios</a>
         <h1 th:text="${apiario.nombre}">Apiario</h1>
+        <img class="foto-detalle" src="/img/apiario-hiveon.webp" width="1440" height="1080" alt="Paisaje ilustrativo de un apiario, generado con IA">
         <dl class="tarjeta datos-apiario">
             <dt>Departamento</dt>
             <dd th:text="${apiario.departamento}">Departamento</dd>

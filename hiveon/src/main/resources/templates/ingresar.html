@@ -4,41 +4,43 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Iniciar sesión · HiveOn</title>
-    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-marca.webp}">
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
     <link rel="stylesheet" th:href="@{/css/editorial.css}">
 </head>
 <body class="sitio-publico pagina-acceso">
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
     <header class="cabecera-publica">
         <div class="ancho-publico cabecera-contenido">
-            <a class="marca marca-editorial" th:href="@{/}" aria-label="Volver a la bienvenida de HiveOn">
-                <span class="simbolo-marca"><img class="logo logo-barra" th:src="@{/img/hiveon-marca.webp}" alt=""></span>
+            <a class="marca" th:href="@{/}" aria-label="Volver a la bienvenida de HiveOn">
+                <img class="logo-barra" th:src="@{/img/hiveon-simbolo.webp}" alt="" width="44" height="44">
                 <span>HiveOn</span>
             </a>
             <a class="enlace-regresar" th:href="@{/}"><span aria-hidden="true">←</span> Volver al inicio</a>
         </div>
     </header>
-    <main class="ancho-publico acceso-distribucion">
-        <figure class="acceso-foto">
-            <img th:src="@{/img/apiario-hiveon.webp}" width="1440" height="1080" alt="">
-            <figcaption>Del apiario al lote</figcaption>
-        </figure>
+    <main id="contenido" tabindex="-1" class="ancho-publico acceso-distribucion">
+        <section class="acceso-contexto" aria-labelledby="historia">
+            <h2 id="historia">Cada colmena<br>tiene una historia.</h2>
+            <img class="acceso-foto" th:src="@{/img/cuidado-colmena.webp}" width="1440" height="1080"
+                 alt="Un apicultor inspecciona un marco de colmena">
+            <span class="credito-foto">Imagen ilustrativa generada con IA</span>
+        </section>
         <section class="acceso" aria-labelledby="titulo-acceso">
             <h1 id="titulo-acceso">Iniciar sesión</h1>
-            <p>Accede con el correo y la contraseña de tu cuenta HiveOn.</p>
-            <p class="aviso aviso-error" th:if="${param.error}" role="alert">
-                No se pudo iniciar sesión. Revisa tus credenciales e inténtalo de nuevo.
-            </p>
+            <p>Accede con tu cuenta HiveOn.</p>
+            <p class="aviso aviso-error" th:if="${param.error}" role="alert">No se pudo iniciar sesión. Revisa tus credenciales e inténtalo de nuevo.</p>
             <p class="aviso aviso-exito" th:if="${param.salida}" role="status">Cerraste sesión.</p>
             <form class="formulario" th:action="@{/ingresar}" method="post">
                 <label for="correo">Correo electrónico</label>
                 <input id="correo" name="username" type="email" autocomplete="username" required>
                 <label for="contrasena">Contraseña</label>
                 <input id="contrasena" name="password" type="password" autocomplete="current-password" required>
-                <button class="boton boton-bosque" type="submit">Ingresar <span aria-hidden="true">↗</span></button>
+                <button class="boton" type="submit">Ingresar <span aria-hidden="true">↗</span></button>
             </form>
-            <p class="acceso-ayuda">El acceso se habilita a través de un administrador.</p>
+            <p class="acceso-ayuda">¿Necesitas una cuenta? Contacta al administrador.</p>
         </section>
     </main>
+    <footer class="pie-acceso">HiveOn · Gestión apícola</footer>
 </body>
 </html>

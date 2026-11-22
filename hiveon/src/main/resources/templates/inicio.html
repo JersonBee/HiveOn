@@ -1,39 +1,191 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Inicio · HiveOn</title>
-    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
-</head>
-<body>
-    <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area">
-        <section class="bienvenida">
-            <h1>Inicio</h1>
-        </section>
-        <nav class="accesos-inicio" aria-label="Módulos disponibles">
-            <a th:if="${puedeConsultarApiarios}" class="tarjeta acceso-modulo" th:href="@{/apiarios}">
-                <strong>Mis apiarios</strong>
-                <span>Consulta tus apiarios, colmenas y actividad de campo.</span>
-            </a>
-            <a th:if="${roles.contains('ROLE_COMPRADOR')}" class="tarjeta acceso-modulo" th:href="@{/lotes}">
-                <strong>Lotes publicados</strong>
-                <span>Consulta el origen y la fecha de cosecha de la miel.</span>
-            </a>
-            <a th:if="${roles.contains('ROLE_INSPECTOR')}" class="tarjeta acceso-modulo" th:href="@{/expedientes}">
-                <strong>Expedientes remitidos</strong>
-                <span>Revisa antecedentes sanitarios y registra decisiones.</span>
-            </a>
-            <a th:if="${roles.contains('ROLE_ADMINISTRADOR')}" class="tarjeta acceso-modulo" th:href="@{/administracion}">
-                <strong>Administración</strong>
-                <span>Gestiona cuentas y tipos de colmena.</span>
-            </a>
-            <a th:if="${roles.contains('ROLE_ADMINISTRADOR')}" class="tarjeta acceso-modulo" th:href="@{/administracion/auditoria}">
-                <strong>Auditoría</strong>
-                <span>Consulta quién realizó cada operación y su resultado.</span>
-            </a>
-        </nav>
-    </main>
-</body>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Inicio · HiveOn</title>
+        <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
+        <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+        <link rel="stylesheet" th:href="@{/css/interior.css}">
+    </head>
+    <body class="aplicacion" th:with="modulo='inicio'">
+        <header th:replace="~{fragmentos :: barra}">
+    </header>
+        <div th:replace="~{fragmentos :: contexto}">
+        </div>
+        <main id="contenido-app" tabindex="-1" class="area vista-inicio">
+            <section class="bienvenida bienvenida-viva">
+                <div class="bienvenida-texto">
+                    <div th:if="${roles.contains('ROLE_APICULTOR')}">
+                        <h1>Tu apiario empieza aquí.</h1>
+                        <p>Organiza tus colmenas y conserva la historia de cada visita.</p>
+                    </div>
+                    <div th:if="${roles.contains('ROLE_OPERARIO')}">
+                        <h1>Un nuevo día en el apiario.</h1>
+                        <p>Consulta tus asignaciones y deja constancia del trabajo de campo.</p>
+                    </div>
+                    <div th:if="${roles.contains('ROLE_TECNICO')}">
+                        <h1>Cuidar también es acompañar.</h1>
+                        <p>Consulta los antecedentes y documenta el seguimiento sanitario.</p>
+                    </div>
+                    <div th:if="${roles.contains('ROLE_INSPECTOR')}">
+                        <h1>Cada expediente tiene una historia.</h1>
+                        <p>Revisa los antecedentes y deja constancia de tu decisión académica.</p>
+                    </div>
+                    <div th:if="${roles.contains('ROLE_COMPRADOR')}">
+                        <h1>Conoce la historia de la miel.</h1>
+                        <p>Consulta los lotes publicados y descubre su origen registrado.</p>
+                    </div>
+                    <div th:if="${roles.contains('ROLE_ADMINISTRADOR')}">
+                        <h1>Todo en su lugar.</h1>
+                        <p>Cuida las cuentas, los catálogos y el registro de las operaciones.</p>
+                    </div>
+                </div>
+                <img class="imagen-bienvenida" src="/img/apiario-hiveon.webp" alt="" width="1440" height="1080">
+            </section>
+            <h2 class="titulo-accesos">Continúa en tu espacio</h2>
+            <nav class="accesos-inicio" aria-label="Módulos disponibles">
+                <a th:if="${puedeConsultarApiarios}" class="tarjeta acceso-modulo" th:href="@{/apiarios}">
+                    <svg th:replace="~{fragmentos :: icono('colmena')}">
+                </svg>
+                    <strong>Mis apiarios</strong>
+                    <span>Consulta tus apiarios, colmenas y actividad de campo.</span>
+                </a>
+                <a th:if="${roles.contains('ROLE_COMPRADOR')}" class="tarjeta acceso-modulo" th:href="@{/lotes}">
+                    <svg th:replace="~{fragmentos :: icono('miel')}">
+                </svg>
+                    <strong>Lotes publicados</strong>
+                    <span>Consulta el origen y la fecha de cosecha de la miel.</span>
+                </a>
+                <a th:if="${roles.contains('ROLE_INSPECTOR')}" class="tarjeta acceso-modulo" th:href="@{/expedientes}">
+                    <svg th:replace="~{fragmentos :: icono('registro')}">
+                </svg>
+                    <strong>Expedientes remitidos</strong>
+                    <span>Revisa antecedentes sanitarios y registra decisiones.</span>
+                </a>
+                <a th:if="${roles.contains('ROLE_ADMINISTRADOR')}" class="tarjeta acceso-modulo" th:href="@{/administracion}">
+                    <svg th:replace="~{fragmentos :: icono('persona')}">
+                </svg>
+                    <strong>Administración</strong>
+                    <span>Gestiona cuentas y tipos de colmena.</span>
+                </a>
+                <a th:if="${roles.contains('ROLE_ADMINISTRADOR')}" class="tarjeta acceso-modulo" th:href="@{/administracion/auditoria}">
+                    <svg th:replace="~{fragmentos :: icono('registro')}">
+                </svg>
+                    <strong>Auditoría</strong>
+                    <span>Consulta quién realizó cada operación y su resultado.</span>
+                </a>
+            </nav>
+            <section class="orientacion-inicio">
+                <div th:if="${roles.contains('ROLE_APICULTOR')}">
+                    <h2>Del apiario al registro</h2>
+                    <ol class="pasos-jornada">
+                        <li>
+                            <strong>Ubica tus colmenas</strong>
+                            <p>Registra y organiza tus colmenas en cada apiario.</p>
+                        </li>
+                        <li>
+                            <strong>Conserva cada visita</strong>
+                            <p>Documenta las inspecciones y consulta el seguimiento sanitario.</p>
+                        </li>
+                        <li>
+                            <strong>Sigue el origen de la miel</strong>
+                            <p>Conecta las cosechas con sus lotes y conserva su trazabilidad.</p>
+                        </li>
+                    </ol>
+                </div>
+                <div th:if="${roles.contains('ROLE_OPERARIO')}">
+                    <h2>Tu jornada de campo</h2>
+                    <ol class="pasos-jornada">
+                        <li>
+                            <strong>Revisa tu asignación</strong>
+                            <p>Consulta los apiarios y las colmenas donde trabajas.</p>
+                        </li>
+                        <li>
+                            <strong>Documenta cada visita</strong>
+                            <p>Registra las inspecciones de las colmenas asignadas.</p>
+                        </li>
+                        <li>
+                            <strong>Actualiza tus tareas</strong>
+                            <p>Deja al día el estado de las actividades a tu cargo.</p>
+                        </li>
+                    </ol>
+                </div>
+                <div th:if="${roles.contains('ROLE_TECNICO')}">
+                    <h2>Tu seguimiento técnico</h2>
+                    <ol class="pasos-jornada">
+                        <li>
+                            <strong>Conoce los antecedentes</strong>
+                            <p>Abre los apiarios que asesoras y consulta su historial.</p>
+                        </li>
+                        <li>
+                            <strong>Registra los tratamientos</strong>
+                            <p>Conserva la fecha y la descripción de cada intervención.</p>
+                        </li>
+                        <li>
+                            <strong>Comparte recomendaciones</strong>
+                            <p>Deja indicaciones para el apiario o una de sus colmenas.</p>
+                        </li>
+                    </ol>
+                </div>
+                <div th:if="${roles.contains('ROLE_INSPECTOR')}">
+                    <h2>Una revisión con contexto</h2>
+                    <ol class="pasos-jornada">
+                        <li>
+                            <strong>Abre un expediente</strong>
+                            <p>Consulta los expedientes remitidos por los propietarios.</p>
+                        </li>
+                        <li>
+                            <strong>Revisa los antecedentes</strong>
+                            <p>Examina la información sanitaria disponible.</p>
+                        </li>
+                        <li>
+                            <strong>Registra tu decisión</strong>
+                            <p>Valida o rechaza el expediente con tus observaciones.</p>
+                        </li>
+                    </ol>
+                </div>
+                <div th:if="${roles.contains('ROLE_COMPRADOR')}">
+                    <h2>Del lote a su origen</h2>
+                    <ol class="pasos-jornada">
+                        <li>
+                            <strong>Explora los lotes</strong>
+                            <p>Abre los lotes publicados por los apicultores.</p>
+                        </li>
+                        <li>
+                            <strong>Consulta su origen</strong>
+                            <p>Identifica el apiario de procedencia registrado.</p>
+                        </li>
+                        <li>
+                            <strong>Revisa la cosecha</strong>
+                            <p>Consulta las fechas y los datos autorizados de trazabilidad.</p>
+                        </li>
+                    </ol>
+                </div>
+                <div th:if="${roles.contains('ROLE_ADMINISTRADOR')}">
+                    <h2>Una administración al día</h2>
+                    <ol class="pasos-jornada">
+                        <li>
+                            <strong>Organiza las cuentas</strong>
+                            <p>Gestiona los datos, el rol y el estado de acceso de cada cuenta.</p>
+                        </li>
+                        <li>
+                            <strong>Mantén los catálogos</strong>
+                            <p>Actualiza los tipos de colmena conservando sus referencias.</p>
+                        </li>
+                        <li>
+                            <strong>Consulta la auditoría</strong>
+                            <p>Revisa el actor, la fecha y el resultado de las operaciones.</p>
+                        </li>
+                    </ol>
+                </div>
+                <aside class="historia-apiario">
+                    <img src="/img/cuidado-colmena.webp" alt="" width="1440" height="1080">
+                    <h2>Una historia que se conserva</h2>
+                    <p>Cada inspección, tratamiento y cosecha ayuda a reconstruir lo que ocurre en el apiario.</p>
+                    <small>Imágenes ilustrativas generadas con IA.</small>
+                </aside>
+            </section>
+        </main>
+    </body>
 </html>

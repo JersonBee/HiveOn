@@ -4,11 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Editar cuenta · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='administracion'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area vista-usuario">
         <a class="volver" th:href="@{/administracion}">Volver a Administración</a>
         <h1>Editar cuenta</h1>
         <form class="tarjeta formulario area-formulario" method="post" th:action="@{/administracion/usuarios/{id}(id=${cuenta.id})}">
@@ -24,6 +27,7 @@
             <input id="clave" name="clave" type="password" minlength="8" maxlength="72" autocomplete="new-password">
             <button class="boton" type="submit">Guardar cuenta</button>
         </form>
+<aside class="nota-formulario"><img src="/img/cuidado-colmena.webp" width="1440" height="1080" alt=""><h2>Una cuenta, un rol</h2><p>El rol define las operaciones disponibles. El estado de la cuenta controla su acceso al sistema.</p><small>Imagen ilustrativa generada con IA.</small></aside>
     </main>
 </body>
 </html>

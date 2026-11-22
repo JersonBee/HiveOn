@@ -1,0 +1,103 @@
+.icono { display: inline-block; width: 1.5rem; height: 1.5rem; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.aplicacion .barra { background: #f8f6ee; }
+.aplicacion .barra .marca { min-height: 3rem; gap: .6rem; letter-spacing: -.05em; }
+.aplicacion .logo-barra { transform: none; filter: none; opacity: 1; }
+.aplicacion .perfil-rol { align-self: flex-start; margin: .3rem .6rem 0; padding: .3rem .7rem; border-radius: .5rem; background: var(--salvia); color: var(--bosque); font-weight: 700; }
+.navegacion-app a { gap: .7rem; }
+.navegacion-app .icono { width: 1.3rem; height: 1.3rem; }
+.aplicacion .navegacion-app a[aria-current="page"] { background: #f7df9f; border-color: #e7ca85; }
+.contexto-app { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4.3rem; padding: .85rem 2.25rem; border-bottom: 1px solid var(--borde); background: #fffdf7; }
+.lema-app, .cuenta-app { display: flex; align-items: center; gap: .8rem; min-width: 0; }
+.lema-app { color: var(--bosque); font-size: .9rem; font-weight: 700; }
+.cuenta-app { max-width: 45%; font-size: .8rem; color: var(--texto-secundario); }
+.cuenta-app > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.aplicacion .area { margin-top: 1.8rem; }
+.bienvenida-viva { display: grid; grid-template-columns: 1.1fr 1fr; padding: 0; overflow: hidden; min-height: 15rem; }
+.bienvenida-texto { padding: clamp(1.4rem, 3vw, 2.5rem); align-self: center; }
+.bienvenida-viva h1 { font-size: clamp(2rem, 3.3vw, 3.25rem); max-width: 15ch; line-height: 1.08; }
+.bienvenida-viva p { font-size: 1.05rem; max-width: 38ch; }
+.imagen-bienvenida { width: 100%; height: 100%; min-height: 15rem; max-height: 20rem; object-fit: cover; border-radius: 40% 0 0 40% / 100% 0 0 100%; }
+.titulo-accesos { margin: 1.7rem 0 .9rem; }
+.accesos-inicio { grid-template-columns: minmax(0,1fr); margin-top: 0; gap: .7rem; }
+.accesos-inicio .acceso-modulo { position: relative; grid-template-columns: 3.6rem minmax(8rem,.6fr) minmax(0,1.7fr) 1.5rem; align-items: center; align-content: center; gap: 1rem; padding: 1rem 1.2rem; }
+.acceso-modulo > .icono { grid-column: 1; grid-row: 1; padding: .8rem; width: 3.6rem; height: 3.6rem; border-radius: .8rem; background: var(--salvia); color: var(--bosque); }
+.acceso-modulo strong { grid-column: 2; grid-row: 1; font-size: 1.15rem; }
+.acceso-modulo span { grid-column: 3; grid-row: 1; font-size: .93rem; }
+.acceso-modulo::after { grid-column: 4; grid-row: 1; content: ''; display: block; width: 1.3rem; height: 1.3rem; background: var(--bosque); mask: url('../img/flecha.svg') center / contain no-repeat; }
+.orientacion-inicio { display: grid; grid-template-columns: 1.05fr 1fr; gap: 2rem; margin-top: 2rem; align-items: start; }
+.pasos-jornada { counter-reset: jornada; list-style: none; padding: 0; margin: .5rem 0 0; }
+.pasos-jornada li { position: relative; padding: 1.05rem 0 1.05rem 3.2rem; border-bottom: 1px solid #d5dec9; counter-increment: jornada; }
+.pasos-jornada li:last-child { border-bottom: 0; }
+.pasos-jornada li::before { content: counter(jornada); position: absolute; left: 0; top: 1rem; display: grid; place-items: center; width: 2.3rem; height: 2.3rem; border-radius: 50%; background: var(--miel); font: 700 1.15rem var(--titulos); }
+.pasos-jornada strong { font: 650 1.15rem var(--titulos); }
+.pasos-jornada p { margin: .35rem 0 0; color: var(--texto-secundario); font-size: .93rem; }
+.historia-apiario { padding: 1.2rem; background: var(--salvia); border: 1px solid #d0dcc5; border-radius: .9rem; }
+.historia-apiario img { width: 100%; height: 10rem; object-fit: cover; object-position: center 45%; border-radius: .55rem; margin-bottom: 1rem; }
+.historia-apiario h2 { font-size: 1.4rem; margin-bottom: .6rem; }
+.historia-apiario p { margin-bottom: .6rem; color: var(--bosque); font-size: .94rem; }
+.historia-apiario small, .nota-formulario small { color: #526247; font-size: .68rem; }
+.panorama-apiarios { display: grid; grid-template-columns: 1fr 1fr 1.1fr; align-items: center; gap: 1.4rem; overflow: hidden; border: 1px solid #d5dec9; border-radius: .9rem; background: #e9efdf; margin: 1rem 0 1.5rem; }
+.panorama-apiarios > div { display: flex; align-items: center; gap: 1rem; padding-left: 1.5rem; }
+.panorama-apiarios .icono { width: 2.6rem; height: 2.6rem; color: var(--bosque); }
+.panorama-apiarios p { margin: 0; color: var(--bosque); }
+.panorama-apiarios strong { display: block; font: 650 2.4rem/1 var(--titulos); }
+.panorama-apiarios span { display: block; margin-top: .4rem; font-size: .85rem; }
+.panorama-apiarios > p { font: 600 1.15rem/1.4 var(--titulos); }
+.panorama-apiarios img { width: 100%; height: 8.8rem; object-fit: cover; }
+.tarjetas-apiarios > .tarjeta { position: relative; padding: 1.5rem; border-top: 0; border-left: 4px solid #a3b88d; background: #fffefb; }
+.tarjetas-apiarios .enlace-registro { display: block; font: 650 1.25rem var(--titulos); margin-bottom: .65rem; }
+.tarjetas-apiarios .estado { justify-self: start; margin-top: .5rem; }
+.estado-vacio strong, .estado-vacio > span { display: block; }
+.estado-vacio > span { margin-top: .6rem; font-weight: 400; }
+.aplicacion .seccion-modulo { margin-block: 1.6rem; }
+.panel-operacion > h2, .catalogos > h2 { display: flex; gap: .7rem; align-items: center; }
+.panel-operacion > h2::before, .catalogos > h2::before { content: ''; display: block; flex: 0 0 .45rem; height: 1.4rem; border-radius: .2rem; background: #c0cfaa; }
+.panel-operacion:has(> form) { row-gap: .6rem; }
+.panel-operacion:has(> form) > form { grid-row: 2 / span 2; border-top: 3px solid #dbe4cc; }
+.panel-operacion > details { margin-bottom: 1rem; }
+.aplicacion .formulario.tarjeta { border-top: 3px solid #c5d3b4; }
+.aplicacion :is(.vista-nuevo, .vista-editar, .vista-usuario) { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(0,1fr); gap: 0 2rem; max-width: 76rem; }
+:is(.vista-nuevo,.vista-editar,.vista-usuario) > :is(.volver,h1,.aviso) { grid-column: 1 / -1; }
+:is(.vista-nuevo,.vista-editar,.vista-usuario) > form { grid-column: 1; width: 100%; margin-top: 0; }
+:is(.vista-nuevo,.vista-editar,.vista-usuario) > form + form { margin-top: 1rem; }
+.nota-formulario { grid-column: 2; grid-row: 3 / span 3; align-self: start; padding: 1rem; border-radius: .8rem; background: #e9efdf; }
+.nota-formulario img { width: 100%; height: 12rem; object-fit: cover; border-radius: .5rem; margin-bottom: 1.2rem; }
+.nota-formulario h2 { font-size: 1.35rem; }
+.nota-formulario p { font-size: .9rem; color: var(--bosque); }
+.foto-detalle { width: 100%; height: 12rem; object-fit: cover; border-radius: .9rem; margin-bottom: 1.3rem; }
+@media (max-width: 68rem) {
+ .accesos-inicio .acceso-modulo { grid-template-columns: 3.6rem minmax(0,1fr) 1.5rem; gap: .25rem 1rem; }
+ .acceso-modulo > .icono { grid-row: 1 / span 2; }
+ .acceso-modulo span { grid-column: 2; grid-row: 2; }
+ .acceso-modulo::after { grid-column: 3; grid-row: 1 / span 2; }
+ .panorama-apiarios { grid-template-columns: 1fr 1fr; }
+ .panorama-apiarios > p { display: none; }
+}
+@media (max-width: 56rem) {
+ .contexto-app { padding: .7rem 1rem; min-height: 3.2rem; }
+ .lema-app { font-size: .8rem; }
+ .cuenta-app { max-width: 40%; font-size: .7rem; }
+ .aplicacion .perfil-rol { margin: 0 0 0 auto; max-width: 9rem; align-self: center; }
+ .aplicacion .barra .marca { font-size: 1.35rem; }
+}
+@media (max-width: 42rem) {
+ .contexto-app { display: block; }
+ .cuenta-app { display: none; }
+ .bienvenida-viva { grid-template-columns: minmax(0,1fr); }
+ .imagen-bienvenida { min-height: 0; height: 9rem; border-radius: 0; object-position: center 55%; }
+ .bienvenida-texto { padding: 1.5rem; }
+ .bienvenida-viva h1 { max-width: 18ch; }
+ .orientacion-inicio { grid-template-columns: minmax(0,1fr); gap: 1.3rem; }
+ .accesos-inicio .acceso-modulo { padding: .9rem; grid-template-columns: 2.9rem minmax(0,1fr) 1rem; gap: .4rem .65rem; }
+ .acceso-modulo > .icono { width: 2.9rem; height: 2.9rem; padding: .6rem; }
+ .acceso-modulo strong { font-size: 1.05rem; }
+ .acceso-modulo span { font-size: .85rem; }
+ .panorama-apiarios > div { padding-left: 1rem; gap: .6rem; }
+ .panorama-apiarios .icono { width: 2rem; height: 2rem; }
+ .panorama-apiarios img { height: 8rem; }
+ .panorama-apiarios strong { font-size: 2rem; }
+ .aplicacion :is(.vista-nuevo,.vista-editar,.vista-usuario) { grid-template-columns: minmax(0,1fr); }
+ .nota-formulario { grid-column: 1; grid-row: auto; margin-top: 1.3rem; }
+ .nota-formulario img { height: 8rem; }
+ .aplicacion .perfil-rol { font-size: .7rem; padding: .2rem .45rem; }
+}

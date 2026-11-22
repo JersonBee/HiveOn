@@ -4,18 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lotes publicados · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='lotes'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area vista-lotes-publicos">
         <h1>Lotes publicados</h1>
+<section class="panorama-apiarios" aria-label="Resumen de la consulta"><div><svg th:replace="~{fragmentos :: icono('miel')}"></svg><p><strong th:text="${lotes.size()}">0</strong><span>Lotes de esta consulta</span></p></div><p>El origen de la miel,<br>al alcance de tu consulta.</p><img src="/img/apiario-hiveon.webp" width="1440" height="1080" alt=""></section>
         <form method="get" th:action="@{/lotes}" class="tarjeta formulario area-formulario">
             <label for="codigo">Código del lote</label>
             <input id="codigo" name="codigo" th:value="${codigo}">
             <button type="submit" class="boton">Buscar lote</button>
         </form>
-        <p th:if="${lotes.isEmpty()}">No hay lotes publicados para esta consulta.</p>
+        <p class="estado-vacio" th:if="${lotes.isEmpty()}">No hay lotes publicados para esta consulta.</p>
         <ul class="registros">
             <li class="tarjeta registro" th:each="l : ${lotes}">
                 <a class="enlace-registro" th:href="@{/lotes/{id}(id=${l.id})}" th:text="${l.codigo}"></a>

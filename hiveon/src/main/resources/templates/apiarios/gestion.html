@@ -4,11 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Gestión de apiario · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='apiarios'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area vista-gestion">
         <a class="volver" th:href="@{/apiarios/{id}(id=${apiarioId})}">Volver al apiario</a>
         <h1 th:text="${acceso.nombre}">Apiario</h1>
         <p class="aviso" th:if="${acceso.archivado}">Apiario archivado</p>
@@ -26,9 +29,9 @@
             </form>
         </div>
 
-        <section class="seccion-modulo">
+        <section class="seccion-modulo panel-operacion">
             <h2>Colmenas</h2>
-            <p th:if="${colmenas.isEmpty()}">Aún no hay colmenas registradas.</p>
+            <p class="estado-vacio" th:if="${colmenas.isEmpty()}">Aún no hay colmenas registradas.</p>
             <ul class="registros">
                 <li class="tarjeta registro" th:each="colmena : ${colmenas}">
                     <a class="enlace-registro" th:href="@{/apiarios/{id}/colmenas/{c}(id=${apiarioId},c=${colmena.id})}"
@@ -52,9 +55,9 @@
             </form>
         </section>
 
-        <section class="seccion-modulo" th:if="${acceso.propietario()}">
+        <section class="seccion-modulo panel-operacion" th:if="${acceso.propietario()}">
             <h2>Vinculaciones</h2>
-            <p th:if="${vinculos.isEmpty()}">Aún no hay vinculaciones activas.</p>
+            <p class="estado-vacio" th:if="${vinculos.isEmpty()}">Aún no hay vinculaciones activas.</p>
             <ul class="registros">
                 <li class="tarjeta registro" th:each="v : ${vinculos}">
                     <div>
@@ -76,9 +79,9 @@
             </form>
         </section>
 
-        <section class="seccion-modulo" th:if="${acceso.propietario() or acceso.operario()}">
+        <section class="seccion-modulo panel-operacion" th:if="${acceso.propietario() or acceso.operario()}">
             <h2 th:text="${acceso.operario() ? 'Mis tareas' : 'Tareas del apiario'}">Tareas</h2>
-            <p th:if="${tareas.isEmpty()}">Aún no hay tareas disponibles.</p>
+            <p class="estado-vacio" th:if="${tareas.isEmpty()}">Aún no hay tareas disponibles.</p>
             <ul class="registros">
                 <li class="tarjeta" th:each="tarea : ${tareas}">
                     <strong th:text="${tarea.descripcion}"></strong>
@@ -116,7 +119,7 @@
 
         <section class="seccion-modulo" th:unless="${acceso.operario()}">
             <h2>Historial sanitario</h2>
-            <p th:if="${historialSanitario.isEmpty()}">Aún no hay inspecciones ni tratamientos registrados.</p>
+            <p class="estado-vacio" th:if="${historialSanitario.isEmpty()}">Aún no hay inspecciones ni tratamientos registrados.</p>
             <details th:unless="${historialSanitario.isEmpty()}">
                 <summary>Ver inspecciones y tratamientos</summary>
                 <ul class="registros">
@@ -128,7 +131,7 @@
                 </ul>
             </details>
             <h2>Recomendaciones sanitarias</h2>
-            <p th:if="${recomendaciones.isEmpty()}">Aún no hay recomendaciones.</p>
+            <p class="estado-vacio" th:if="${recomendaciones.isEmpty()}">Aún no hay recomendaciones.</p>
             <ul class="registros">
                 <li class="tarjeta" th:each="r : ${recomendaciones}">
                     <strong th:text="${r.colmena == null ? 'Apiario' : r.colmena}"></strong>

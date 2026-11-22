@@ -1,13 +1,43 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
+    <svg th:fragment="icono(nombre)" class="icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <use th:href="@{|/img/iconos.svg#${nombre}|}"></use>
+    </svg>
+    <div class="contexto-app" th:fragment="contexto">
+        <span class="lema-app"><svg th:replace="~{fragmentos :: icono('hoja')}"></svg>Cuidar el apiario, registro a registro.</span>
+        <span class="cuenta-app"><svg th:replace="~{fragmentos :: icono('persona')}"></svg><span sec:authentication="name">Tu cuenta</span></span>
+    </div>
     <header class="barra" th:fragment="barra">
+        <a class="saltar" href="#contenido-app">Saltar al contenido</a>
         <a class="marca" th:href="@{/inicio}" aria-label="Inicio de HiveOn">
-            <span class="simbolo-marca"><img class="logo logo-barra" th:src="@{/img/hiveon-marca.webp}" alt=""></span>
+            <img class="logo logo-barra" th:src="@{/img/hiveon-simbolo.webp}" alt="" width="44" height="44">
             <span>HiveOn</span>
         </a>
-        <form th:action="@{/salir}" method="post">
-            <button class="boton boton-secundario" type="submit">Cerrar sesión</button>
+        <div class="perfil-rol" aria-label="Rol de la cuenta">
+            <span sec:authorize="hasRole('APICULTOR')">Apicultor</span>
+            <span sec:authorize="hasRole('OPERARIO')">Operario de campo</span>
+            <span sec:authorize="hasRole('TECNICO')">Técnico apícola</span>
+            <span sec:authorize="hasRole('INSPECTOR')">Inspector simulado</span>
+            <span sec:authorize="hasRole('COMPRADOR')">Comprador</span>
+            <span sec:authorize="hasRole('ADMINISTRADOR')">Administrador</span>
+        </div>
+        <nav class="navegacion-app" aria-label="Navegación principal">
+            <a th:href="@{/inicio}" th:attr="aria-current=${modulo == 'inicio' ? 'page' : null}"><svg th:replace="~{fragmentos :: icono('inicio')}"></svg><span>Inicio</span></a>
+            <a sec:authorize="hasAnyRole('APICULTOR','OPERARIO','TECNICO')" th:href="@{/apiarios}"
+               th:attr="aria-current=${modulo == 'apiarios' ? 'page' : null}"><svg th:replace="~{fragmentos :: icono('colmena')}"></svg><span>Mis apiarios</span></a>
+            <a sec:authorize="hasRole('COMPRADOR')" th:href="@{/lotes}"
+               th:attr="aria-current=${modulo == 'lotes' ? 'page' : null}"><svg th:replace="~{fragmentos :: icono('miel')}"></svg><span>Lotes publicados</span></a>
+            <a sec:authorize="hasRole('INSPECTOR')" th:href="@{/expedientes}"
+               th:attr="aria-current=${modulo == 'expedientes' ? 'page' : null}"><svg th:replace="~{fragmentos :: icono('registro')}"></svg><span>Expedientes remitidos</span></a>
+            <a sec:authorize="hasRole('ADMINISTRADOR')" th:href="@{/administracion}"
+               th:attr="aria-current=${modulo == 'administracion' ? 'page' : null}"><svg th:replace="~{fragmentos :: icono('persona')}"></svg><span>Administración</span></a>
+            <a sec:authorize="hasRole('ADMINISTRADOR')" th:href="@{/administracion/auditoria}"
+               th:attr="aria-current=${modulo == 'auditoria' ? 'page' : null}"><svg th:replace="~{fragmentos :: icono('registro')}"></svg><span>Auditoría</span></a>
+        </nav>
+        <a class="enlace-publico" th:href="@{/}">Ver el proyecto <span aria-hidden="true">↗</span></a>
+        <form class="salida-app" th:action="@{/salir}" method="post">
+            <button class="boton boton-salida" type="submit">Cerrar sesión</button>
         </form>
     </header>
 </body>

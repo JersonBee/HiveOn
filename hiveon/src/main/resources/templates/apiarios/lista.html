@@ -4,17 +4,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mis apiarios · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='apiarios'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area vista-lista">
         <div class="encabezado-modulo">
             <h1>Mis apiarios</h1>
             <a th:if="${puedeRegistrar}" class="boton" th:href="@{/apiarios/nuevo}">Registrar apiario</a>
         </div>
+        <section class="panorama-apiarios" aria-label="Resumen de apiarios">
+            <div><svg th:replace="~{fragmentos :: icono('colmena')}"></svg><p><strong th:text="${apiarios.size()}">0</strong><span>Apiarios en tu listado</span></p></div>
+            <p>Un lugar para cada colmena.<br>Una historia para cada apiario.</p>
+            <img src="/img/apiario-hiveon.webp" alt="" width="1440" height="1080">
+        </section>
         <p class="aviso aviso-exito" th:if="${registrado == true}" role="status">El apiario se registró correctamente.</p>
-        <p class="tarjeta estado-vacio" th:if="${apiarios.isEmpty()}">Aún no tienes apiarios registrados.</p>
+        <p class="tarjeta estado-vacio" th:if="${apiarios.isEmpty()}"><strong>Aún no tienes apiarios registrados.</strong><span th:if="${puedeRegistrar}">Registra el primero para empezar a organizar sus colmenas y visitas.</span><span th:unless="${puedeRegistrar}">Cuando te vinculen a un apiario, podrás consultarlo en este espacio.</span></p>
         <ul class="registros tarjetas-apiarios" th:unless="${apiarios.isEmpty()}">
             <li class="tarjeta registro" th:each="apiario : ${apiarios}">
                 <div>

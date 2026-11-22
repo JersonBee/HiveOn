@@ -4,11 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Colmena · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
     <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
 </head>
-<body>
+<body class="aplicacion" th:with="modulo='apiarios'">
     <header th:replace="~{fragmentos :: barra}"></header>
-    <main class="area area-formulario" th:with="activa=${!acceso.archivado and !colmena.archivada}">
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area area-formulario vista-colmena" th:with="activa=${!acceso.archivado and !colmena.archivada}">
         <a class="volver" th:href="@{/apiarios/{id}/gestion(id=${apiarioId})}">Volver a la gestión</a>
         <h1 th:text="|Colmena ${colmena.codigo}|">Colmena</h1>
         <dl class="tarjeta datos-apiario">
@@ -35,9 +38,9 @@
                 <button class="boton boton-secundario" type="submit">Archivar colmena</button>
             </form>
         </div>
-        <section class="seccion-modulo">
+        <section class="seccion-modulo panel-operacion">
             <h2>Inspecciones</h2>
-            <p th:if="${inspecciones.isEmpty()}">Aún no hay inspecciones.</p>
+            <p class="estado-vacio" th:if="${inspecciones.isEmpty()}">Aún no hay inspecciones.</p>
             <ul class="registros">
                 <li class="tarjeta" th:each="i : ${inspecciones}">
                     <strong th:text="|${i.fecha} · ${i.autor}|"></strong>
@@ -53,9 +56,9 @@
                 <button class="boton" type="submit">Registrar inspección</button>
             </form>
         </section>
-        <section class="seccion-modulo" th:unless="${acceso.operario()}">
+        <section class="seccion-modulo panel-operacion" th:unless="${acceso.operario()}">
             <h2>Tratamientos</h2>
-            <p th:if="${tratamientos.isEmpty()}">Aún no hay tratamientos.</p>
+            <p class="estado-vacio" th:if="${tratamientos.isEmpty()}">Aún no hay tratamientos.</p>
             <ul class="registros">
                 <li class="tarjeta" th:each="t : ${tratamientos}">
                     <strong th:text="|${t.fecha} · ${t.autor}|"></strong>
