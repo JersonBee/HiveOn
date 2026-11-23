@@ -192,3 +192,46 @@ La prueba usa cuentas ficticias y revierte sus datos.
   con un hash BCrypt, siguiendo las mismas reglas de las cuentas de prueba.
 
 La [suite completa](#suite-de-pruebas) incluye las integraciones del Sprint 3.
+
+## Pronóstico municipal con Open-Meteo
+
+`GET /apiarios/{id}/clima` devuelve una vista Thymeleaf. El controlador comprueba
+la autorización por registro antes de consultar el componente `model.Clima`.
+La operación está disponible para Apicultor, Operario y Técnico con acceso al
+apiario. Las rutas existentes de detalle y gestión enlazan esta vista.
+
+El componente usa `HttpClient` de Java 21 y Jackson ya incluido en Spring Boot:
+
+1. Busca el municipio y departamento con la [API de geocodificación](https://open-meteo.com/en/docs/geocoding-api),
+   restringiendo la consulta a Colombia y español. Normaliza tildes, puntuación,
+   espacios y mayúsculas para comprobar la coincidencia; no elige el primer
+   resultado cuando existen puntos de referencia diferentes.
+2. Consulta el [pronóstico](https://open-meteo.com/en/docs) para esas coordenadas:
+   temperatura y viento actuales estimados; temperatura mínima/máxima,
+   probabilidad máxima de precipitación y viento máximo diario para hoy y los
+   dos días siguientes. Usa °C, km/h y la zona `America/Bogota`.
+3. Renderiza el HTML con la referencia municipal, las horas del proveedor y de
+   consulta, y los enlaces de atribución a Open-Meteo, GeoNames y CC BY 4.0.
+
+No crea un servidor REST, tablas nuevas ni campos de coordenadas. No envía al
+proveedor cuentas, veredas o identificadores de apiarios. La landing permanece
+sin cambios y no se añaden scripts a los módulos internos.
+
+Cada petición externa tiene un límite de dos segundos, sin reintentos
+automáticos. Las cachés en memoria admiten hasta 512 entradas cada una:
+ubicaciones durante siete días, pronósticos durante una hora o hasta la siguiente
+medianoche de Colombia, lo que ocurra primero, y errores durante cinco minutos.
+Son locales a cada instancia y se pierden al reiniciar; no requieren Redis ni
+variables de entorno adicionales. Las visitas al inicio o los listados no
+consultan el clima. Un fallo no presenta datos vencidos ni impide operar el resto
+del sistema.
+
+La integración se limita al uso académico no comercial conforme a las
+[condiciones del proveedor](https://open-meteo.com/en/terms). No genera
+recomendaciones automáticas para intervenir las colmenas.
+
+Las pruebas `ClimaTests` y `ClimaControllerTests` simulan las respuestas externas.
+`ClimaIntegracionTests`, incluida en `-Psuite-completa`, comprueba con PostgreSQL
+la propiedad, los vínculos y su revocación; también simula el clima. Ninguna
+prueba automatizada depende de la disponibilidad de Open-Meteo. La comprobación
+real del proveedor se realiza por separado.

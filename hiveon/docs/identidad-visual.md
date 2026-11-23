@@ -49,6 +49,17 @@ de los registros disponibles en la consulta, incluidas las consultas vacías.
 Las imágenes de contexto son ilustrativas: no representan fotografías de los
 apiarios registrados. Los formularios conservan sus campos y operaciones.
 
+El fondo del espacio de trabajo utiliza una trama vectorial de panal. Los
+hexágonos reaparecen en los accesos, la numeración y los encabezados de sección;
+los cortes angulares de las fotografías conectan esas divisiones. Los paneles
+de lectura conservan superficies opacas para mantener el contraste. La trama
+es ornamental y no incorpora variantes ni repeticiones del logo.
+
+Las vistas internas usan una entrada breve y transiciones de navegación CSS
+en navegadores compatibles. Los enlaces tienen estados hover y los formularios
+resaltan el foco. La preferencia de movimiento reducido desactiva la animación
+y los desplazamientos decorativos.
+
 ## Interacciones y restricciones
 
 Los enlaces, botones, filas y formularios disponen de estados hover y foco.
@@ -62,9 +73,9 @@ Spring MVC, la autorización por rol y los flujos GET/POST.
 
 ## Verificación del rediseño
 
-Se ejecutó la suite completa: 28 pruebas, sin fallos ni omisiones. La revisión
-con Edge y Playwright comprobó 24 recorridos de vistas para los seis roles en
-anchos de 320, 390, 768 y 1440 píxeles: 96 comprobaciones sin desbordamiento horizontal.
+Se ejecutó la suite completa: 62 pruebas, sin fallos ni omisiones. La revisión
+con Edge y Playwright comprobó 20 recorridos de vistas para los seis roles en
+anchos de 320, 390, 768 y 1440 píxeles: 80 comprobaciones sin desbordamiento horizontal.
 También se verificaron hover, navegación por anclas, movimiento reducido, foco, sección activa, alta administrativa y cierre de sesión. Las cuentas y los registros pertenecen a una base local ficticia.
 
 Se contrastaron la composición, tipografía, color, marca, campos y navegación con

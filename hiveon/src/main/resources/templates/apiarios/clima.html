@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="|Clima · ${apiario.nombre} · HiveOn|">Clima · HiveOn</title>
+    <link rel="icon" type="image/webp" th:href="@{/img/hiveon-simbolo.webp}">
+    <link rel="stylesheet" th:href="@{/css/hiveon.css}">
+    <link rel="stylesheet" th:href="@{/css/interior.css}">
+    <link rel="stylesheet" th:href="@{/css/clima.css}">
+</head>
+<body class="aplicacion" th:with="modulo='apiarios'">
+    <header th:replace="~{fragmentos :: barra}"></header>
+    <div th:replace="~{fragmentos :: contexto}"></div>
+    <main id="contenido-app" tabindex="-1" class="area vista-clima">
+        <a class="volver" th:href="@{/apiarios/{id}(id=${apiario.id})}">Volver al apiario</a>
+        <div class="encabezado-modulo">
+            <div><h1>Clima del municipio</h1><p class="descripcion-vista" th:text="${apiario.nombre}">Apiario</p></div>
+            <a class="boton boton-secundario" th:href="@{/apiarios/{id}/gestion(id=${apiario.id})}">Colmenas y seguimiento</a>
+        </div>
+        <section class="referencia-clima" aria-labelledby="ubicacion-clima">
+            <svg th:replace="~{fragmentos :: icono('hoja')}"></svg>
+            <div><h2 id="ubicacion-clima" th:text="|${apiario.municipio}, ${apiario.departamento}|"></h2>
+                <p>Pronóstico de referencia municipal; puede variar en la ubicación del apiario</p></div>
+        </section>
+        <div th:if="${clima.disponible()}" th:with="p=${clima.pronostico}">
+            <section class="actual-clima" aria-labelledby="titulo-actual">
+                <div><h2 id="titulo-actual">Condiciones actuales estimadas</h2>
+                    <p th:text="|Referencia del proveedor: ${#temporals.format(p.horaActual, 'dd/MM/yyyy HH:mm')} · hora de Colombia|"></p></div>
+                <dl><div><dt>Temperatura</dt><dd><span th:text="${#numbers.formatDecimal(p.temperatura, 1, 1)}"></span><small> °C</small></dd></div>
+                    <div><dt>Viento</dt><dd><span th:text="${#numbers.formatDecimal(p.viento, 1, 1)}"></span><small> km/h</small></dd></div></dl>
+            </section>
+            <h2 class="titulo-pronostico">Hoy y los próximos dos días</h2>
+            <div class="dias-clima">
+                <article class="tarjeta dia-clima" th:each="dia, iter : ${p.dias}">
+                    <header><div><h3 th:text="${iter.index == 0 ? 'Hoy' : (iter.index == 1 ? 'Mañana' : 'Pasado mañana')}"></h3>
+                        <time th:datetime="${dia.fecha}" th:text="${#temporals.format(dia.fecha, 'dd/MM/yyyy')}"></time></div>
+                        <svg th:replace="~{fragmentos :: icono(${dia.condicion.icono})}"></svg></header>
+                    <p class="condicion-clima" th:text="${dia.condicion.texto}"></p>
+                    <dl><div><dt>Temperatura mínima</dt><dd th:text="|${#numbers.formatDecimal(dia.minima, 1, 1)} °C|"></dd></div>
+                        <div><dt>Temperatura máxima</dt><dd th:text="|${#numbers.formatDecimal(dia.maxima, 1, 1)} °C|"></dd></div>
+                        <div><dt>Probabilidad máxima de precipitación</dt><dd th:text="|${#numbers.formatDecimal(dia.lluvia, 1, 0)} %|"></dd></div>
+                        <div><dt>Viento máximo diario</dt><dd th:text="|${#numbers.formatDecimal(dia.vientoMaximo, 1, 1)} km/h|"></dd></div></dl>
+                </article>
+            </div>
+            <p class="fecha-consulta" th:text="|Consultado el ${#temporals.format(p.consultaLocal(), 'dd/MM/yyyy HH:mm')} · hora de Colombia.|"></p>
+        </div>
+        <section class="tarjeta clima-no-disponible" th:unless="${clima.disponible()}" role="status">
+            <svg th:replace="~{fragmentos :: icono('nube')}"></svg>
+            <h2>Pronóstico temporalmente no disponible</h2>
+            <p th:text="${clima.mensaje()}"></p>
+            <p>Puedes seguir consultando y gestionando los registros del apiario.</p>
+        </section>
+        <footer class="fuentes-clima">Datos meteorológicos: <a href="https://open-meteo.com/">Open-Meteo</a> ·
+            Ubicación de referencia: <a href="https://www.geonames.org/">GeoNames</a> ·
+            <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+            <p>Consulta informativa para el entorno académico de HiveOn.</p>
+        </footer>
+    </main>
+</body>
+</html>

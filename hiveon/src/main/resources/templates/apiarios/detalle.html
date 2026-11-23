@@ -25,7 +25,10 @@
             <dt>Estado</dt>
             <dd th:text="${apiario.archivado ? 'Archivado' : 'Activo'}">Activo</dd>
         </dl>
-        <a class="boton" th:href="@{/apiarios/{id}/gestion(id=${apiario.id})}">Colmenas y seguimiento</a>
+        <nav class="acciones-modulo" aria-label="Opciones del apiario">
+            <a class="boton" th:href="@{/apiarios/{id}/gestion(id=${apiario.id})}">Colmenas y seguimiento</a>
+            <a class="boton boton-secundario" th:href="@{/apiarios/{id}/clima(id=${apiario.id})}">Consultar clima</a>
+        </nav>
     </main>
 </body>
 </html>

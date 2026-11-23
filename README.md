@@ -53,9 +53,24 @@ flowchart LR
     Security --> Controller["Controlador · Spring MVC"]
     Controller <-->|"Operaciones y datos"| Model["Modelo · Reglas y transacciones"]
     Model <-->|"JDBC"| Database[("PostgreSQL · Supabase")]
+    Model <-->|"HTTPS · consulta externa"| Weather["Open-Meteo"]
     Controller -->|"Datos para renderizar"| View["Vista · Thymeleaf"]
     View -->|"HTML"| Browser
 ```
+
+### Pronóstico municipal con Open-Meteo
+
+Desde el detalle o la gestión de un apiario, **Consultar clima** abre una vista
+HTML con temperatura y viento actuales estimados y un pronóstico de tres días.
+El Apicultor, Operario o Técnico debe tener acceso al apiario. La referencia es
+el municipio registrado, no las coordenadas exactas de la colmena.
+
+Java consulta las APIs externas de geocodificación y pronóstico de Open-Meteo;
+HiveOn mantiene MVC y Thymeleaf, sin publicar endpoints JSON propios ni añadir
+JavaScript interno. La integración no requiere clave para el uso académico no
+comercial y muestra la atribución a Open-Meteo y GeoNames. Ante una ubicación
+ambigua o un fallo del proveedor, se informa sin impedir la gestión apícola.
+[Ver funcionamiento, caché y pruebas](hiveon/README.md#pronóstico-municipal-con-open-meteo).
 
 ## 5. Base de datos
 
@@ -88,7 +103,7 @@ Para ejecutar la suite completa, configura esas variables con una base de prueba
 .\mvnw.cmd -Psuite-completa verify
 ```
 
-En Linux o macOS, usa `./mvnw`. La evaluación de MVC y del rediseño incluye **28 pruebas** unitarias, de controladores y de integración con PostgreSQL. El recorrido en Edge verificó la portada, el acceso, el inicio, Mis apiarios y Administración en escritorio y móvil. [Ver cobertura y preparación de la base de pruebas](hiveon/README.md#suite-de-pruebas).
+En Linux o macOS, usa `./mvnw`. La suite reúne pruebas unitarias, de controladores y de integración con PostgreSQL, incluidas las del clima con respuestas meteorológicas simuladas. El recorrido en Edge verificó la portada, el acceso, el inicio, Mis apiarios y Administración en escritorio y móvil. [Ver cobertura y preparación de la base de pruebas](hiveon/README.md#suite-de-pruebas).
 
 ## 8. Referencias
 
@@ -98,3 +113,5 @@ En Linux o macOS, usa `./mvnw`. La evaluación de MVC y del rediseño incluye **
 - Controladores web y manejo de solicitudes. [Documentación de Spring MVC](https://docs.spring.io/spring-framework/reference/web/webmvc.html).
 - Autenticación, autorización y protección de formularios. [Documentación de Spring Security](https://docs.spring.io/spring-security/reference/servlet/index.html).
 - PostgreSQL administrado y configuración de conexiones. [Documentación de Supabase Database](https://supabase.com/docs/guides/database/overview).
+- Pronóstico y variables meteorológicas. [Open-Meteo](https://open-meteo.com/en/docs).
+- Búsqueda de coordenadas municipales. [Geocodificación de Open-Meteo](https://open-meteo.com/en/docs/geocoding-api).
