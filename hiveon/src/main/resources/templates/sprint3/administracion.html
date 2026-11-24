@@ -23,16 +23,22 @@
             <div class="tarjeta directorio">
                 <h2>Usuarios</h2>
                 <table class="tabla-cuentas">
-                    <thead><tr><th scope="col">Nombre y correo</th><th scope="col">Rol</th><th scope="col">Estado</th></tr></thead>
+                    <thead><tr><th scope="col">Nombre y correo</th><th scope="col">Rol</th><th scope="col">Estado</th><th scope="col" class="acciones-cuenta">Acciones</th></tr></thead>
                     <tbody>
                         <tr th:each="u : ${cuentas}">
                             <td>
-                                <a class="enlace-registro" th:href="@{/administracion/usuarios/{id}(id=${u.id})}" th:text="${u.nombre}"></a>
+                                <strong class="nombre-cuenta" th:text="${u.nombre}"></strong>
                                 <span class="correo-cuenta" th:text="${u.correo}"></span>
                             </td>
                             <td th:text="${#strings.capitalize(#strings.toLowerCase(u.rol_codigo))}"></td>
                             <td><span class="estado" th:classappend="${!u.habilitado ? 'estado-inactivo' : ''}"
                                       th:text="${u.habilitado ? 'Habilitada' : 'Inhabilitada'}"></span></td>
+                            <td class="acciones-cuenta">
+                                <a class="boton boton-editar" th:href="@{/administracion/usuarios/{id}(id=${u.id})}"
+                                   th:attr="aria-label=|Editar cuenta de ${u.nombre}|">
+                                    <svg th:replace="~{fragmentos :: icono('lapiz')}"></svg><span>Editar</span>
+                                </a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

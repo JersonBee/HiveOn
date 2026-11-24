@@ -67,14 +67,14 @@
 .foto-detalle { width: 100%; height: 12rem; object-fit: cover; border-radius: .9rem; margin-bottom: 1.3rem; }
 
 /* Panal: textura y divisiones exclusivas del espacio de trabajo. */
-.aplicacion { background-color: #faf8ee; background-image: url('../img/panal-fondo.svg'); background-size: 288px 252px; }
-.aplicacion .barra { background-color: #f6f3e6; background-image: linear-gradient(#f8f6eefc 70%, #f6f3e6cc), url('../img/panal-fondo.svg'); background-size: auto, 288px 252px; }
+.aplicacion { --hexagono: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%); --panal-ancho: 288px; --panal-alto: 249.415316px; background-color: #faf8ee; background-image: url('../img/panal-fondo.svg'); background-size: var(--panal-ancho) var(--panal-alto); }
+.aplicacion .barra { background-color: #f6f3e6; background-image: linear-gradient(#f8f6eefc 70%, #f6f3e6cc), url('../img/panal-fondo.svg'); background-size: auto, var(--panal-ancho) var(--panal-alto); }
 .aplicacion .contexto-app { border-bottom-color: #d0ddc0; box-shadow: 0 3px 18px #40553408; }
 .aplicacion .area { animation: aparecer-interior 340ms ease-out both; }
 .aplicacion .encabezado-modulo { padding-bottom: 1rem; border-bottom: 1px solid #d0ddc0; }
-.aplicacion .bienvenida-viva { background: #dfebd4 url('../img/panal-fondo.svg') center / 288px 252px; border-color: #bfd0ab; box-shadow: 0 12px 28px -22px #42603d70; }
+.aplicacion .bienvenida-viva { background: #dfebd4 url('../img/panal-fondo.svg') center / var(--panal-ancho) var(--panal-alto); border-color: #bfd0ab; box-shadow: 0 12px 28px -22px #42603d70; }
 .aplicacion .imagen-bienvenida { border-radius: 0; clip-path: polygon(11% 0, 100% 0, 100% 100%, 11% 100%, 0 50%); }
-.aplicacion .acceso-modulo > .icono { border-radius: 0; clip-path: polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%); background: #f5df9f; }
+.aplicacion .acceso-modulo > .icono { width: 3.117691rem; height: 3.6rem; justify-self: center; border-radius: 0; clip-path: var(--hexagono); background: #f5df9f; }
 .aplicacion .acceso-modulo:hover, .aplicacion .tarjetas-apiarios > .tarjeta:hover { border-color: #a6be8c; box-shadow: 0 12px 22px -15px #42603d55; transform: translateY(-3px); }
 .aplicacion .tarjetas-apiarios > .tarjeta { transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease; }
 .aplicacion .navegacion-app a { transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease; }
@@ -83,19 +83,21 @@
 .aplicacion .orientacion-inicio { padding-top: 1.3rem; border-top: 1px solid #cddaba; }
 .aplicacion .orientacion-inicio > div { padding: 1.3rem; border: 1px solid #dce3ce; border-radius: .8rem 1.6rem .8rem 1.6rem; background: #fffdf7; }
 .aplicacion .orientacion-inicio > div > h2 { color: var(--bosque); }
-.aplicacion .pasos-jornada li::before { border-radius: 0; clip-path: polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%); }
+.aplicacion .pasos-jornada li::before { width: 1.991858rem; height: 2.3rem; border-radius: 0; clip-path: var(--hexagono); }
 .aplicacion .historia-apiario, .aplicacion .nota-formulario { border-radius: 1.6rem .5rem 1.6rem .5rem; background-color: #e4edd9; box-shadow: 0 12px 24px -22px #42603d70; }
 .aplicacion .historia-apiario img { border-radius: .7rem; clip-path: polygon(0 0,93% 0,100% 18%,100% 100%,0 100%); }
 .aplicacion .nota-formulario img { border-radius: .8rem .2rem .8rem .2rem; }
 .aplicacion .formulario.tarjeta { transition: border-color 180ms ease, box-shadow 180ms ease; }
 .aplicacion .formulario.tarjeta:focus-within { border-color: #95ac7b; box-shadow: 0 0 0 3px #dce8d580, 0 8px 22px -18px #42603d60; }
-.aplicacion .panel-operacion > h2::before, .aplicacion .catalogos > h2::before { flex-basis: 1rem; height: 1.15rem; border-radius: 0; background: #e8c56e; clip-path: polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%); }
+.aplicacion .panel-operacion > h2::before, .aplicacion .catalogos > h2::before { flex-basis: .995929rem; height: 1.15rem; border-radius: 0; background: #e8c56e; clip-path: var(--hexagono); }
 .aplicacion .panel-operacion > h2::after, .aplicacion .catalogos > h2::after { content: ''; height: 1px; flex: 1; background: linear-gradient(90deg, #bdcfa6, #e3e9d9); }
 .aplicacion .registros:not(.tarjetas-apiarios) > li:nth-child(even) { background-color: #fcfdf7; }
 .aplicacion .fuentes-clima { padding: 1rem; border: 1px solid #dce3ce; border-radius: .7rem; background: #fffdf7; }
 .aplicacion .fecha-consulta { display: inline-block; padding: .4rem .7rem; border-radius: .4rem; background: #fffdf7; }
 @keyframes aparecer-interior { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-@view-transition { navigation: auto; }
+@media (prefers-reduced-motion: no-preference) {
+ @view-transition { navigation: auto; }
+}
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 180ms; }
 @media (max-width: 68rem) {
  .accesos-inicio .acceso-modulo { grid-template-columns: 3.6rem minmax(0,1fr) 1.5rem; gap: .25rem 1rem; }
@@ -122,7 +124,7 @@
  .bienvenida-viva h1 { max-width: 18ch; }
  .orientacion-inicio { grid-template-columns: minmax(0,1fr); gap: 1.3rem; }
  .accesos-inicio .acceso-modulo { padding: .9rem; grid-template-columns: 2.9rem minmax(0,1fr) 1rem; gap: .4rem .65rem; }
- .acceso-modulo > .icono { width: 2.9rem; height: 2.9rem; padding: .6rem; }
+ .aplicacion .acceso-modulo > .icono { width: 2.511474rem; height: 2.9rem; padding: .6rem; }
  .acceso-modulo strong { font-size: 1.05rem; }
  .acceso-modulo span { font-size: .85rem; }
  .panorama-apiarios > div { padding-left: 1rem; gap: .6rem; }
@@ -133,10 +135,34 @@
  .nota-formulario { grid-column: 1; grid-row: auto; margin-top: 1.3rem; }
  .nota-formulario img { height: 8rem; }
  .aplicacion .perfil-rol { font-size: .7rem; padding: .2rem .45rem; }
- .aplicacion { background-size: 240px 210px; }
+ .aplicacion { --panal-ancho: 240px; --panal-alto: 207.846097px; }
  .aplicacion .imagen-bienvenida { clip-path: polygon(0 8%,50% 0,100% 8%,100% 100%,0 100%); }
 }
 @media (prefers-reduced-motion: reduce) {
  .aplicacion .area, ::view-transition-group(root), ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
  .aplicacion .acceso-modulo:hover, .aplicacion .tarjetas-apiarios > .tarjeta:hover, .aplicacion .navegacion-app a:hover { transform: none; }
+}
+
+.aplicacion .boton { transition: color 170ms ease, background-color 170ms ease, border-color 170ms ease, box-shadow 170ms ease, transform 170ms ease; }
+.aplicacion .boton:not(.boton-secundario):not(.boton-salida):not(.boton-editar):hover { background-color: #eac263; border-color: #b28b38; box-shadow: 0 6px 14px -9px #785e31a0; }
+.aplicacion .navegacion-app a:is(:hover, :focus-visible) { transform: none; border-color: #b8cba5; background-color: #edf3e5; box-shadow: inset 3px 0 #8ca572; }
+.aplicacion .navegacion-app a[aria-current="page"]:is(:hover, :focus-visible) { background: #f3d282; border-color: #cfa952; box-shadow: inset 3px 0 #b68a32; }
+.aplicacion .acceso-modulo:is(:hover, :focus-visible) { background-color: #fffdf4; border-color: #9ab47c; box-shadow: 0 9px 20px -13px #42603d75; }
+.aplicacion .acceso-modulo::after { transition: transform 170ms ease; }
+.aplicacion .acceso-modulo:is(:hover, :focus-visible)::after { transform: translateX(3px); }
+.aplicacion .tarjetas-apiarios .enlace-registro::after { position: absolute; inset: 0; border-radius: .85rem; content: ''; }
+.aplicacion .tarjetas-apiarios .enlace-registro:focus-visible { outline: none; }
+.aplicacion .tarjetas-apiarios .enlace-registro:focus-visible::after { outline: 3px solid var(--bosque); outline-offset: 4px; }
+.aplicacion .tabla-cuentas .nombre-cuenta { font-size: .95rem; }
+.aplicacion .tabla-cuentas .acciones-cuenta { text-align: right; }
+.aplicacion .tabla-cuentas .boton-editar { min-height: 2.75rem; padding: .55rem .7rem; gap: .4rem; white-space: nowrap; font-size: .82rem; color: var(--bosque); background: #eef3e8; border-color: #bfd1ad; }
+.aplicacion .boton-editar .icono { width: 1.1rem; height: 1.1rem; }
+.aplicacion .tabla-cuentas .boton-editar:is(:hover, :focus-visible) { color: #fff; background-color: var(--bosque); border-color: var(--bosque); box-shadow: 0 5px 12px -8px #2d493899; }
+.aplicacion .tabla-cuentas tbody tr:has(.boton-editar:is(:hover, :focus-visible)) { background-color: #f2f7eb; }
+@media (max-width: 40rem) {
+ .aplicacion .tabla-cuentas .acciones-cuenta { grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: .3rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+ .aplicacion .acceso-modulo:is(:hover, :focus-visible)::after { transform: none; }
+ .aplicacion .boton:hover { transform: none; }
 }

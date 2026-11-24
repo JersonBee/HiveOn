@@ -1,9 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="288" height="252" viewBox="0 0 96 84">
-  <g stroke="#a7bc8c" stroke-opacity=".28" stroke-width=".45" stroke-linejoin="round">
-    <path d="M24 0 48 14v28L24 56 0 42V14Z" fill="none"/>
-    <path d="m72 0 24 14v28L72 56 48 42V14Z" fill="#e8cd87" fill-opacity=".12"/>
-    <path d="m0 42 24 14v28L0 98-24 84V56Z" fill="none"/>
-    <path d="m48 42 24 14v28L48 98 24 84V56Z" fill="#c8d8b5" fill-opacity=".12"/>
-    <path d="m96 42 24 14v28L96 98 72 84V56Z" fill="none"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="288" height="249.415316" viewBox="0 0 288 249.415316">
+  <!-- Hexágonos regulares: ancho 144, alto 166.276877, lados 83.138439. -->
+  <path d="M216 0 288 41.569219v83.138439L216 166.276877l-72-41.569219V41.569219Z" fill="#e8cd87" fill-opacity=".12"/>
+  <path d="m144 124.707658 72 41.569219v83.138439l-72 41.569219-72-41.569219v-83.138439Z" fill="#c8d8b5" fill-opacity=".12"/>
+  <!-- Cada arista interior se dibuja una sola vez para mantener el mismo grosor. -->
+  <path d="M0 41.569219 72 0l72 41.569219L216 0l72 41.569219M0 41.569219v83.138439l72 41.569219 72-41.569219 72 41.569219 72-41.569219V41.569219m-144 0v83.138439M72 166.276877v83.138439m144-83.138439v83.138439"
+        fill="none" stroke="#a7bc8c" stroke-opacity=".28" stroke-width="1.35" stroke-linejoin="round"/>
 </svg>

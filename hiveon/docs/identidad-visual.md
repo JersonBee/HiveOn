@@ -62,6 +62,16 @@ y los desplazamientos decorativos.
 
 ## Interacciones y restricciones
 
+Los hexágonos interiores siguen la orientación de la landing: vértice superior
+y seis lados iguales, con una proporción de ancho/alto de √3/2. La trama de
+fondo conserva esa geometría en escritorio y móvil. El icono de usuario utiliza
+un contorno continuo con remates redondeados.
+
+La tabla de cuentas incluye una acción explícita **Editar**, acompañada de un
+lápiz y un nombre accesible que identifica la cuenta. Los enlaces de navegación,
+accesos a módulos y botones responden al hover y al foco de teclado. Las tarjetas
+de apiarios permiten abrir el detalle desde toda su superficie.
+
 Los enlaces, botones, filas y formularios disponen de estados hover y foco.
 La landing usa animaciones CSS de entrada, movimiento suave de la abeja y
 revelado de secciones. El contenido permanece accesible cuando el navegador
@@ -82,6 +92,12 @@ Se contrastaron la composición, tipografía, color, marca, campos y navegación
 los conceptos visuales. La implementación conserva los campos y operaciones
 existentes; el catálogo permite editar sus valores. Las fotografías finales son
 recursos independientes y los textos explican el alcance académico del sistema.
+
+En el ajuste posterior de hexágonos e interacciones se comprobaron 36 vistas y
+tamaños de pantalla (320, 390, 768 y 1440 píxeles), sin desbordamientos ni errores
+del navegador. Se verificaron las proporciones de los hexágonos, el hover, el
+foco de teclado y la apertura y guardado del formulario de cuenta mediante el
+botón Editar. Las pruebas utilizaron cuentas ficticias en una base local.
 
 ## Referencias del proyecto
 
